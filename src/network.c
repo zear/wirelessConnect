@@ -39,7 +39,10 @@ int networkConnect()
 		break;
 	}
 	//system("dhcpcd wlan0");
-	system("udhcpc -i wlan0");
+	if(system("udhcpc -i wlan0 -n"))
+	{
+		return 1;
+	}
 
 	return 0;
 }

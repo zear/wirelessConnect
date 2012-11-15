@@ -77,8 +77,10 @@ void menuAction(MenuItem *Item)
 		case ACTION_CONNECT:
 			if(CurNetwork.status == STATUS_OFF)
 			{
-				networkConnect();
-				CurNetwork.status = STATUS_ON;
+				if(!networkConnect())
+				{
+					CurNetwork.status = STATUS_ON;
+				}
 			}
 			else
 			{
