@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Wireless
+Comment=Connect to wi-fi access points
+Exec=wirelessConnect.bin
+Icon=icon
+Categories=applications;
