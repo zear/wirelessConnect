@@ -11,7 +11,7 @@ int networkConnect()
 
 	sprintf(cmdSetEssid, "iwconfig wlan0 essid \"%s\"", CurNetwork.essid);
 	sprintf(cmdSetWepKey, "iwconfig wlan0 key s:%s", CurNetwork.key);
-	sprintf(cmdSetWpaPassphrase, "wpa_passphrase \"%s\" \"%s\" > /etc/wpa.conf", CurNetwork.essid, CurNetwork.key);
+	sprintf(cmdSetWpaPassphrase, "wpa_passphrase \"%s\" \"%s\" > /tmp/wpa.conf", CurNetwork.essid, CurNetwork.key);
 
 	system("ifconfig wlan0 down");
 	system("iwconfig wlan0 mode managed");
@@ -31,7 +31,7 @@ int networkConnect()
 		system("ifconfig wlan0 up");
 		sleep(1);
 		system(cmdSetWpaPassphrase);
-		system("wpa_supplicant -B -Dwext -iwlan0 -c/etc/wpa.conf");
+		system("wpa_supplicant -B -Dwext -iwlan0 -c/tmp/wpa.conf");
 		sleep(1);
 		break;
 
