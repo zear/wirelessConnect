@@ -15,7 +15,8 @@ void OSKeyboardInput()
 	{
 		Keyboard.inputLen = 60;
 		//Keyboard.inputLen = strlen(Keyboard.source) + 1;
-		Keyboard.input = malloc(Keyboard.inputLen);
+		Keyboard.input = calloc(Keyboard.inputLen, 1);
+		//Keyboard.input = malloc(Keyboard.inputLen);
 		strcpy(Keyboard.input, Keyboard.source);
 		Keyboard.inputPos = strlen(Keyboard.source);
 		Keyboard.inited = 1;
@@ -101,7 +102,9 @@ void OSKeyboardInput()
 	if(keystate[SDLK_BACKSPACE])
 	{
 		keystate[SDLK_BACKSPACE] = 0;
-		strcpy(Keyboard.input, "");
+		free(Keyboard.input);
+		Keyboard.input = NULL;
+		Keyboard.input = calloc(Keyboard.inputLen, 1);
 		Keyboard.inputPos = 0;
 	}
 	if(keystate[SDLK_RETURN])
