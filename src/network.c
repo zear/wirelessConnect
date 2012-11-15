@@ -10,7 +10,7 @@ int networkConnect()
 	char cmdSetWpaPassphrase[120];
 
 	sprintf(cmdSetEssid, "iwconfig wlan0 essid \"%s\"", CurNetwork.essid);
-	sprintf(cmdSetEssid, "iwconfig wlan0 key s:%s", CurNetwork.key);
+	sprintf(cmdSetWepKey, "iwconfig wlan0 key s:%s", CurNetwork.key);
 	sprintf(cmdSetWpaPassphrase, "wpa_passphrase \"%s\" \"%s\" > /etc/wpa.conf", CurNetwork.essid, CurNetwork.key);
 
 	system("ifconfig wlan0 down");
