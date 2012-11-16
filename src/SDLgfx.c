@@ -73,7 +73,7 @@ void drawBackground(int r, int g, int b)
 
 void drawKeyboard()
 {
-	Font *CurFont = &FontSmall;
+	Font *CurFont = &FontUnifont;
 	char character[4];
 	char atText[10];
 	char lenText[10];
@@ -106,18 +106,18 @@ void drawKeyboard()
 
 		drawText(Keyboard.input, 20, 20, CurFont);
 		sprintf(atText, "At:  %d", Keyboard.inputPos);
-		drawText(atText, 250, 10, CurFont);
+		drawText(atText, 250, 5, CurFont);
 		sprintf(lenText, "Max: %d", Keyboard.inputLen);
 		drawText(lenText, 250, 20, CurFont);
-		drawText(character, (posX * CurFont->width * 3) + 20, (posY * CurFont->height) + 50, CurFont);
+		drawText(character, (posX * CurFont->width * 2) + 20, (posY * CurFont->height) + 50, CurFont);
 
 		if(Keyboard.cursorPx > 13 && Keyboard.cursorPy == 5)
 		{
-			drawText("*OK*", 14 * CurFont->width * 3 + 25, (5 * CurFont->height) + 50, CurFont);
+			drawText("*OK*", 14 * CurFont->width * 2 + 25, (5 * CurFont->height) + 50, CurFont);
 		}
 		else
 		{
-			drawText("(OK)", 14 * CurFont->width * 3 + 25, (5 * CurFont->height) + 50, CurFont);
+			drawText(" OK ", 14 * CurFont->width * 2 + 25, (5 * CurFont->height) + 50, CurFont);
 		}
 	}
 }

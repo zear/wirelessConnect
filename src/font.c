@@ -4,6 +4,7 @@
 
 Font FontSmall;
 Font FontLarge;
+Font FontUnifont;
 
 int loadFont(Font *Font, char *fileName, int width, int height)
 {

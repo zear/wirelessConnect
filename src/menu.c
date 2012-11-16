@@ -265,12 +265,12 @@ void menuDrawSingle(MenuContainer *Container, int number, int x, int y)
 	{
 		if(CurrentItem->number == number)
 		{
-			drawText(CurrentItem->caption, x, y, &FontSmall);
+			drawText(CurrentItem->caption, x, y, &FontUnifont);
 
 			if(CurrentItem == SelectedItem)
 			{
-				drawText(">", 60, y, &FontSmall);
-				drawText("<", SCREEN_WIDTH - 60, y, &FontSmall);
+				drawText(">", 60, y, &FontUnifont);
+				drawText("<", SCREEN_WIDTH - 60, y, &FontUnifont);
 			}
 			break;
 		}
@@ -285,6 +285,6 @@ void menuDraw(MenuContainer *Container, int x, int y)
 
 	for(i = 0; i < CurrentMenu->size; i++)
 	{
-		menuDrawSingle(CurrentMenu, i, x, y + i * 10); 
+		menuDrawSingle(CurrentMenu, i, x, y + i * 15); 
 	}
 }

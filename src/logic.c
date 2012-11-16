@@ -49,6 +49,7 @@ void logicInit()
 	// init all program assets that we keep through the entire run time
 	loadFont(&FontSmall, "./data/fontSmall.bmp", 5, 9);
 	loadFont(&FontLarge, "./data/fontLarge.bmp", 10, 18);
+	loadFont(&FontUnifont, "./data/fontUnifont.bmp", 8, 15);
 
 	CurNetwork.status = STATUS_OFF; // this should be actually checked in the system
 	Keyboard.inited = 0;

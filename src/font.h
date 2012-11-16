@@ -14,6 +14,7 @@ typedef struct FontFileStruct
 
 extern Font FontSmall;
 extern Font FontLarge;
+extern Font FontUnifont;
 
 int loadFont(Font *Font, char *fileName, int width, int height);
 
