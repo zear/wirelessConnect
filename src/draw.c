@@ -81,6 +81,12 @@ void drawMenu()
 			case STATUS_OFF:
 			drawText("OFF", 110, 80, &FontSmall);
 			break;
+			case STATUS_CONNECTING:
+			drawText("CONNECTING...", 110, 80, &FontSmall);
+			break;
+			case STATUS_FAILED:
+			drawText("FAILED TO CONNECT", 110, 80, &FontSmall);
+			break;
 
 			default:
 			break;

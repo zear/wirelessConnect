@@ -4,7 +4,9 @@
 typedef enum NetStatusEnum
 {
 	STATUS_OFF,
-	STATUS_ON
+	STATUS_ON,
+	STATUS_CONNECTING,
+	STATUS_FAILED
 } NetStatus;
 
 typedef enum NetModeEnum
