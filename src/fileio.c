@@ -140,6 +140,18 @@ int loadConfig(char *filePath, char *fileName)
 	{
 		n = getWords(line, words, MAX_WORDS);
 
+		if(!strcmp(words[0], "INTERFACE:"))
+		{
+			if(n < 1)
+			{
+				fprintf(stderr, "WARNING (loadConfig): No INTERFACE specified!\n");
+			}
+			else
+			{
+				memset(&CurNetwork.interface, 0, sizeof(CurNetwork.interface)); // clean the default interface
+				strcpy(CurNetwork.interface, words[1]);
+			}
+		}
 		if(!strcmp(words[0], "MODE:"))
 		{
 			if(n < 1)
@@ -223,6 +235,7 @@ int saveConfig(char *filePath, char *fileName)
 	}
 
 	printf("Saving config\n");
+	fprintf(ofp, "INTERFACE: \"%s\"\n", CurNetwork.interface);
 	fprintf(ofp, "MODE: %d\n", CurNetwork.mode);
 	fprintf(ofp, "ENCRYPTION: %d\n", CurNetwork.encryption);
 	fprintf(ofp, "ESSID: \"%s\"\n", CurNetwork.essid);

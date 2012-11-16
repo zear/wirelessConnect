@@ -31,6 +31,7 @@ typedef enum NetDhcpEnum
 
 typedef struct NetworkStruct
 {
+	char interface[10];
 	NetStatus status;
 	NetMode mode;
 	char essid[61];

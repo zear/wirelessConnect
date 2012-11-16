@@ -3,43 +3,87 @@
 #include <stdlib.h>
 #include <string.h>
 
+char cmdSetIfaceUp[30];
+char cmdSetIfaceDown[30];
+char cmdSetMode[120];
+char cmdSetEssid[120];
+char cmdSetWepKey[120];
+char cmdSetWpaPassphrase[120];
+char cmdSetWpaSup[120];
+char cmdSetDhcp[30];
+
 int networkConnect()
 {
-	char cmdSetEssid[120];
-	char cmdSetWepKey[120];
-	char cmdSetWpaPassphrase[120];
+	switch(CurNetwork.mode)
+	{
+		case NMODE_MANAGED:
+		sprintf(cmdSetMode, "iwconfig %s mode managed", CurNetwork.interface);
+		break;
+		case NMODE_ADHOC:
+		sprintf(cmdSetMode, "iwconfig %s mode ad-hoc", CurNetwork.interface);
+		break;
+		case NMODE_MASTER:
+		sprintf(cmdSetMode, "iwconfig %s mode master", CurNetwork.interface);
+		break;
 
+		default:
+		break;
+	}
+	sprintf(cmdSetMode, "ifconfig %s up", CurNetwork.interface);
+	sprintf(cmdSetIfaceDown, "ifconfig %s down", CurNetwork.interface);
 	sprintf(cmdSetEssid, "iwconfig wlan0 essid \"%s\"", CurNetwork.essid);
 	sprintf(cmdSetWepKey, "iwconfig wlan0 key s:%s", CurNetwork.key);
 	sprintf(cmdSetWpaPassphrase, "wpa_passphrase \"%s\" \"%s\" > /tmp/wpa.conf", CurNetwork.essid, CurNetwork.key);
+	sprintf(cmdSetWpaSup, "wpa_supplicant -B -Dwext -i%s -c/tmp/wpa.conf", CurNetwork.interface);
+	sprintf(cmdSetDhcp, "udhcpc -i %s -n", CurNetwork.interface);
 
-	system("ifconfig wlan0 down");
-	system("iwconfig wlan0 mode managed");
+	system(cmdSetIfaceDown);
+	if(system(cmdSetMode))
+	{
+		return 1;
+	}
 	system(cmdSetEssid);
 	switch(CurNetwork.encryption)
 	{
 		case ENC_NONE:
-		system("ifconfig wlan0 up");
+		if(system(cmdSetIfaceUp))
+		{
+			return 1;
+		}
 		sleep(1);
 		break;
 		case ENC_WEP:
-		system(cmdSetWepKey);
-		system("ifconfig wlan0 up");
+		if(system(cmdSetWepKey))
+		{
+			return 1;
+		}
+		if(system(cmdSetIfaceUp))
+		{
+			return 1;
+		}
 		sleep(1);
 		break;
 		case ENC_WPA:
-		system("ifconfig wlan0 up");
+		if(system(cmdSetIfaceUp))
+		{
+			return 1;
+		}
 		sleep(1);
-		system(cmdSetWpaPassphrase);
-		system("wpa_supplicant -B -Dwext -iwlan0 -c/tmp/wpa.conf");
+		if(system(cmdSetWpaPassphrase))
+		{
+			return 1;
+		}
+		if(system(cmdSetWpaSup))
+		{
+			return 1;
+		}
 		sleep(1);
 		break;
 
 		default:
 		break;
 	}
-	//system("dhcpcd wlan0");
-	if(system("udhcpc -i wlan0 -n"))
+	if(system(cmdSetDhcp))
 	{
 		return 1;
 	}
@@ -49,5 +93,5 @@ int networkConnect()
 
 int networkDisconnect()
 {
-	system("ifconfig wlan0 down");
+	system(cmdSetIfaceDown);
 }

@@ -30,6 +30,8 @@ void drawMenu()
 	{
 		//drawText("Wireless Connect", 100, 20, &FontLarge);
 
+		drawText("CARD:", 70, 5, &FontUnifont);
+		drawText(CurNetwork.interface, 130, 5, &FontUnifont);
 		drawText("MODE:", 70, 20, &FontUnifont);
 		switch(CurNetwork.mode)
 		{
