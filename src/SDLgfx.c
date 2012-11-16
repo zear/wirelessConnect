@@ -105,6 +105,7 @@ void drawKeyboard()
 		}
 
 		drawText(Keyboard.input, 20, 20, CurFont);
+		drawText("^", 20 + Keyboard.inputPos * CurFont->width, 35, CurFont);
 		sprintf(atText, "At:  %d", Keyboard.inputPos);
 		drawText(atText, 250, 5, CurFont);
 		sprintf(lenText, "Max: %d", Keyboard.inputLen);

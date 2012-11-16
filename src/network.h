@@ -33,9 +33,9 @@ typedef struct NetworkStruct
 {
 	NetStatus status;
 	NetMode mode;
-	char essid[60];
+	char essid[61];
 	NetEncryption encryption;
-	char key[60];
+	char key[61];
 	NetDhcp dhcp;
 	int ip;
 	int netmask;
