@@ -1,5 +1,6 @@
 #include "draw.h"
 #include "font.h"
+#include "global.h"
 #include "input.h"
 #include "logic.h"
 #include "menu.h"
@@ -93,7 +94,8 @@ void drawMenu()
 			default:
 			break;
 		}
-		//drawText(CurNetwork.status, 130, 80, &FontSmall);
+
+		drawText("v0.1.0", SCREEN_WIDTH - 30, SCREEN_HEIGHT - FontSmall.height, &FontSmall);
 
 		menuDraw(CurrentMenu, 100, 100);
 	}

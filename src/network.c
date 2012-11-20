@@ -37,53 +37,54 @@ int networkConnect()
 	sprintf(cmdSetWpaSup, "wpa_supplicant -B -Dwext -i%s -c/tmp/wpa.conf", CurNetwork.interface);
 	sprintf(cmdSetDhcp, "udhcpc -i %s -n", CurNetwork.interface);
 
-	printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", cmdSetIfaceUp, cmdSetIfaceDown, cmdSetMode, cmdSetEssid, cmdSetWepKey, cmdSetWpaPassphrase, cmdSetWpaSup, cmdSetDhcp);
-
 	system(cmdSetIfaceDown);
 	if(system(cmdSetMode))
 	{
 		return 1;
 	}
-	system(cmdSetEssid);
+	if(system(cmdSetEssid))
+	{
+		return 1;
+	}
 	switch(CurNetwork.encryption)
 	{
 		case ENC_NONE:
-		if(system(cmdSetIfaceUp))
-		{
-			return 1;
-		}
-		sleep(1);
-		break;
+			if(system(cmdSetIfaceUp))
+			{
+				return 1;
+			}
+			sleep(1);
+			break;
 		case ENC_WEP:
-		if(system(cmdSetWepKey))
-		{
-			return 1;
-		}
-		if(system(cmdSetIfaceUp))
-		{
-			return 1;
-		}
-		sleep(1);
-		break;
+			if(system(cmdSetWepKey))
+			{
+				return 1;
+			}
+			if(system(cmdSetIfaceUp))
+			{
+				return 1;
+			}
+			sleep(1);
+			break;
 		case ENC_WPA:
-		if(system(cmdSetIfaceUp))
-		{
-			return 1;
-		}
-		sleep(1);
-		if(system(cmdSetWpaPassphrase))
-		{
-			return 1;
-		}
-		if(system(cmdSetWpaSup))
-		{
-			return 1;
-		}
-		sleep(1);
-		break;
+			if(system(cmdSetIfaceUp))
+			{
+				return 1;
+			}
+			sleep(1);
+			if(system(cmdSetWpaPassphrase))
+			{
+				return 1;
+			}
+			if(system(cmdSetWpaSup))
+			{
+				return 1;
+			}
+			sleep(1);
+			break;
 
 		default:
-		break;
+			break;
 	}
 	if(system(cmdSetDhcp))
 	{
