@@ -191,14 +191,12 @@ void menuInput()
 	MenuItem *NewItem = NULL;
 	int newItemNumber = SelectedItem->number;
 
-	if(keystate[SDLK_UP])
+	if(!keyDelayCheck(SDLK_UP, 15))
 	{
-		keystate[SDLK_UP] = 0;
 		newItemNumber--;
 	}
-	else if(keystate[SDLK_DOWN])
+	else if(!keyDelayCheck(SDLK_DOWN, 15))
 	{
-		keystate[SDLK_DOWN] = 0;
 		newItemNumber++;
 	}
 

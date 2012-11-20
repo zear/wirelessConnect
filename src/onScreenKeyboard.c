@@ -4,11 +4,6 @@
 
 OnScrKbd Keyboard;
 
-void OSKeyboardFetchCursor(int x, int y)
-{
-	
-}
-
 void OSKeyboardInput()
 {
 	if(!Keyboard.inited)
@@ -20,24 +15,20 @@ void OSKeyboardInput()
 		Keyboard.inited = 1;
 	}
 
-	if(keystate[SDLK_UP])
+	if(!keyDelayCheck(SDLK_UP, 15))
 	{
-		keystate[SDLK_UP] = 0;
 		Keyboard.cursorPy--;
 	}
-	if(keystate[SDLK_DOWN])
+	if(!keyDelayCheck(SDLK_DOWN, 15))
 	{
-		keystate[SDLK_DOWN] = 0;
 		Keyboard.cursorPy++;
 	}
-	if(keystate[SDLK_LEFT])
+	if(!keyDelayCheck(SDLK_LEFT, 15))
 	{
-		keystate[SDLK_LEFT] = 0;
 		Keyboard.cursorPx--;
 	}
-	if(keystate[SDLK_RIGHT])
+	if(!keyDelayCheck(SDLK_RIGHT, 15))
 	{
-		keystate[SDLK_RIGHT] = 0;
 		Keyboard.cursorPx++;
 	}
 
