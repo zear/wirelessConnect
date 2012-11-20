@@ -184,11 +184,11 @@ void menuLoadAll()
 	MenuOptions = menuCreateNew(MenuOptions, 1, "ESSID", ACTION_OPTIONS_ESSID);
 	MenuOptions = menuCreateNew(MenuOptions, 2, "ENCRYPTION", ACTION_OPTIONS_ENCRYPTION);
 	MenuOptions = menuCreateNew(MenuOptions, 3, "PASSWORD", ACTION_OPTIONS_PASSWORD);
-	MenuOptions = menuCreateNew(MenuOptions, 4, "DHCP", ACTION_OPTIONS_DHCP);
-	MenuOptions = menuCreateNew(MenuOptions, 5, "IP", ACTION_OPTIONS_IP);
-	MenuOptions = menuCreateNew(MenuOptions, 6, "NETMASK", ACTION_OPTIONS_NETMASK);
-	MenuOptions = menuCreateNew(MenuOptions, 7, "", ACTION_NONE);
-	MenuOptions = menuCreateNew(MenuOptions, 8, "BACK", ACTION_OPTIONS_BACK);
+	//MenuOptions = menuCreateNew(MenuOptions, 4, "DHCP", ACTION_OPTIONS_DHCP);
+	//MenuOptions = menuCreateNew(MenuOptions, 5, "IP", ACTION_OPTIONS_IP);
+	//MenuOptions = menuCreateNew(MenuOptions, 6, "NETMASK", ACTION_OPTIONS_NETMASK);
+	MenuOptions = menuCreateNew(MenuOptions, 4, "", ACTION_NONE);
+	MenuOptions = menuCreateNew(MenuOptions, 5, "BACK", ACTION_OPTIONS_BACK);
 
 	CurrentMenu = MenuMain;
 	SelectedItem = menuSwitchItem(CurrentMenu, 0);
