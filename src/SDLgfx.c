@@ -81,45 +81,142 @@ void drawKeyboard()
 	int posY = 0;
 	char i;
 
-	for(i = 32; i < 126; i++, posX++)
+	switch(Keyboard.type)
 	{
-		if(posX > 15)
-		{
-			posX = 0;
-			posY++;
-		}
+		case OSK_ALPHANUM:
+			for(i = 32; i < 126; i++, posX++)
+			{
+				if(posX > 15)
+				{
+					posX = 0;
+					posY++;
+				}
 
-		if(Keyboard.cursorPx == posX && Keyboard.cursorPy == posY)
-		{
-			character[0] = '[';
-			character[1] = i;
-			character[2] = ']';
-			character[3] = '\0';
-		}
-		else
-		{
-			character[0] = ' ';
-			character[1] = i;
-			character[2] = ' ';
-			character[3] = '\0';
-		}
+				if(Keyboard.cursorPx == posX && Keyboard.cursorPy == posY)
+				{
+					character[0] = '[';
+					character[1] = i;
+					character[2] = ']';
+					character[3] = '\0';
+				}
+				else
+				{
+					character[0] = ' ';
+					character[1] = i;
+					character[2] = ' ';
+					character[3] = '\0';
+				}
 
-		drawText(Keyboard.input, 20, 20, CurFont);
-		drawText("^", 20 + Keyboard.inputPos * CurFont->width, 35, CurFont);
-		sprintf(atText, "At:  %d", Keyboard.inputPos);
-		drawText(atText, 250, 5, CurFont);
-		sprintf(lenText, "Max: %d", Keyboard.inputLen);
-		drawText(lenText, 250, 20, CurFont);
-		drawText(character, (posX * CurFont->width * 2) + 20, (posY * CurFont->height) + 50, CurFont);
+				drawText(Keyboard.input, 20, 20, CurFont);
+				drawText("^", 20 + Keyboard.inputPos * CurFont->width, 35, CurFont);
+				sprintf(atText, "At:  %d", Keyboard.inputPos);
+				drawText(atText, 250, 5, CurFont);
+				sprintf(lenText, "Max: %d", Keyboard.inputLen);
+				drawText(lenText, 250, 20, CurFont);
+				drawText(character, (posX * CurFont->width * 2) + 20, (posY * CurFont->height) + 50, CurFont);
 
-		if(Keyboard.cursorPx > 13 && Keyboard.cursorPy == 5)
-		{
-			drawText("*OK*", 14 * CurFont->width * 2 + 25, (5 * CurFont->height) + 50, CurFont);
-		}
-		else
-		{
-			drawText(" OK ", 14 * CurFont->width * 2 + 25, (5 * CurFont->height) + 50, CurFont);
-		}
+				if(Keyboard.cursorPx > 13 && Keyboard.cursorPy == 5)
+				{
+					drawText("*OK*", 14 * CurFont->width * 2 + 25, (5 * CurFont->height) + 50, CurFont);
+				}
+				else
+				{
+					drawText(" OK ", 14 * CurFont->width * 2 + 25, (5 * CurFont->height) + 50, CurFont);
+				}
+			}
+			break;
+		case OSK_NUMERIC:
+			for(i = 48; i < 58; i++, posX++)
+			{
+				if(posX > 15)
+				{
+					posX = 0;
+					posY++;
+				}
+
+				if(Keyboard.cursorPx == posX && Keyboard.cursorPy == posY)
+				{
+					character[0] = '[';
+					character[1] = i;
+					character[2] = ']';
+					character[3] = '\0';
+				}
+				else
+				{
+					character[0] = ' ';
+					character[1] = i;
+					character[2] = ' ';
+					character[3] = '\0';
+				}
+
+				drawText(Keyboard.input, 20, 20, CurFont);
+				drawText("^", 20 + Keyboard.inputPos * CurFont->width, 35, CurFont);
+				sprintf(atText, "At:  %d", Keyboard.inputPos);
+				drawText(atText, 250, 5, CurFont);
+				sprintf(lenText, "Max: %d", Keyboard.inputLen);
+				drawText(lenText, 250, 20, CurFont);
+				drawText(character, (posX * CurFont->width * 2) + 20, (posY * CurFont->height) + 50, CurFont);
+
+				if(Keyboard.cursorPy > 0)
+				{
+					drawText("*OK*", 14 * CurFont->width * 2 + 25, (5 * CurFont->height) + 50, CurFont);
+				}
+				else
+				{
+					drawText(" OK ", 14 * CurFont->width * 2 + 25, (5 * CurFont->height) + 50, CurFont);
+				}
+			}
+			break;
+		case OSK_IP:
+			for(i = 48; i < 59; i++, posX++)
+			{
+				if(posX > 15)
+				{
+					posX = 0;
+					posY++;
+				}
+
+				if(Keyboard.cursorPx == posX && Keyboard.cursorPy == posY)
+				{
+					character[0] = '[';
+					character[1] = i;
+					character[2] = ']';
+					character[3] = '\0';
+				}
+				else
+				{
+					character[0] = ' ';
+					character[1] = i;
+					character[2] = ' ';
+					character[3] = '\0';
+				}
+
+				if(character[1] == 58)
+				{
+					character[1] = '.';
+				}
+
+				drawText(Keyboard.input, 20, 20, CurFont);
+				drawText("^", 20 + Keyboard.inputPos * CurFont->width, 35, CurFont);
+				sprintf(atText, "At:  %d", Keyboard.inputPos);
+				drawText(atText, 250, 5, CurFont);
+				sprintf(lenText, "Max: %d", Keyboard.inputLen);
+				drawText(lenText, 250, 20, CurFont);
+				drawText(character, (posX * CurFont->width * 2) + 20, (posY * CurFont->height) + 50, CurFont);
+
+				if(Keyboard.cursorPy > 0)
+				{
+					drawText("*OK*", 14 * CurFont->width * 2 + 25, (5 * CurFont->height) + 50, CurFont);
+				}
+				else
+				{
+					drawText(" OK ", 14 * CurFont->width * 2 + 25, (5 * CurFont->height) + 50, CurFont);
+				}
+			}
+			break;
+
+		default:
+			break;
 	}
 }
 

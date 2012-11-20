@@ -1,8 +1,16 @@
 #ifndef _ON_SCREEN_KEYBOARD_H_
 #define _ON_SCREEN_KEYBOARD_H_
 
+typedef enum OnScrKbdTypeEnum
+{
+	OSK_ALPHANUM,
+	OSK_NUMERIC,
+	OSK_IP
+} OnScrKbdType;
+
 typedef struct OnScrKbdStruct
 {
+	OnScrKbdType type;
 	int inited;
 	int enabled;
 	char *input;

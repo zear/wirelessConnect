@@ -39,8 +39,8 @@ typedef struct NetworkStruct
 	NetEncryption encryption;
 	char key[61];
 	NetDhcp dhcp;
-	int ip;
-	int netmask;
+	char ip[16];
+	char netmask[16];
 } Network;
 
 extern Network CurNetwork;

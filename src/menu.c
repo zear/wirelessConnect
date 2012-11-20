@@ -105,6 +105,8 @@ void menuAction(MenuItem *Item)
 			break;
 		case ACTION_OPTIONS_ESSID:
 			Keyboard.enabled = 1;
+			Keyboard.inputLen = 59;
+			Keyboard.type = OSK_ALPHANUM;
 			Keyboard.source = CurNetwork.essid;
 			break;
 		case ACTION_OPTIONS_ENCRYPTION:
@@ -116,6 +118,8 @@ void menuAction(MenuItem *Item)
 			break;
 		case ACTION_OPTIONS_PASSWORD:
 			Keyboard.enabled = 1;
+			Keyboard.inputLen = 59;
+			Keyboard.type = OSK_ALPHANUM;
 			Keyboard.source = CurNetwork.key;
 			break;
 		case ACTION_OPTIONS_DHCP:
@@ -126,12 +130,16 @@ void menuAction(MenuItem *Item)
 			}
 			break;
 		case ACTION_OPTIONS_IP:
-			//Keyboard.enabled = 1;
-			//Keyboard.source = CurNetwork.ip;
+			Keyboard.enabled = 1;
+			Keyboard.inputLen = 14;
+			Keyboard.type = OSK_IP;
+			Keyboard.source = CurNetwork.ip;
 			break;
 		case ACTION_OPTIONS_NETMASK:
-			//Keyboard.enabled = 1;
-			//Keyboard.source = CurNetwork.netmask;
+			Keyboard.enabled = 1;
+			Keyboard.inputLen = 14;
+			Keyboard.type = OSK_NUMERIC;
+			Keyboard.source = CurNetwork.netmask;
 			break;
 		case ACTION_OPTIONS_BACK:
 			CurrentMenu = MenuMain;
