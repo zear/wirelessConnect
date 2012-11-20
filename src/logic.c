@@ -52,7 +52,10 @@ void logicInit()
 	loadFont(&FontUnifont, "./data/fontUnifont.bmp", 8, 15);
 
 	strcpy(CurNetwork.interface, "wlan0");
-	CurNetwork.status = STATUS_OFF; // this should be actually checked in the system
+	if(loadTemp("/tmp", "/.wiCon.tmp"))
+	{
+		CurNetwork.status = STATUS_OFF;
+	}
 	Keyboard.inited = 0;
 	Keyboard.input = NULL;
 

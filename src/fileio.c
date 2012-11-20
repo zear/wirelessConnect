@@ -132,7 +132,7 @@ int loadConfig(char *filePath, char *fileName)
 	ifp = fopen(newFileName, "r");
 	if(ifp == NULL)
 	{
-		fprintf(stderr, "ERROR (loadMap): Cannot open map file: %s\n", newFileName);
+		fprintf(stderr, "ERROR (loadConfig): Cannot open config file: %s\n", newFileName);
 		return 1;
 	}
 
@@ -212,6 +212,57 @@ int loadConfig(char *filePath, char *fileName)
 	return 0;
 }
 
+int loadTemp(char *filePath, char *fileName)
+{
+	FILE *ifp;
+	char *newFileName = NULL;
+	char line[MAX_LINE];
+	char *words[MAX_WORDS];
+	int n;
+	int i;
+	int j;
+	int wordsSize;
+
+	newFileName = (char *)malloc(strlen(filePath) + strlen(fileName) + 1);
+	if(newFileName == NULL)
+	{
+		fprintf(stderr, "Out of memory\n");
+		return 1;
+	}
+	strcpy(newFileName, filePath);
+	strcat(newFileName, fileName);
+
+	printf("Loading config from: %s\n", newFileName);
+	ifp = fopen(newFileName, "r");
+	if(ifp == NULL)
+	{
+		fprintf(stderr, "ERROR (loadTemp): Cannot open temp file: %s\n", newFileName);
+		return 1;
+	}
+
+	while(fgetLine(ifp, line, MAX_LINE) != EOF)
+	{
+		n = getWords(line, words, MAX_WORDS);
+
+		if(!strcmp(words[0], "STATUS:"))
+		{
+			if(n < 1)
+			{
+				fprintf(stderr, "WARNING (loadTemp): No STATUS specified!\n");
+				CurNetwork.status = STATUS_OFF;
+			}
+			else
+			{
+				CurNetwork.status = atoi(words[1]);
+			}
+		}
+	}
+
+	fclose(ifp);
+
+	return 0;
+}
+
 int saveConfig(char *filePath, char *fileName)
 {
 	FILE *ofp;
@@ -246,6 +297,36 @@ int saveConfig(char *filePath, char *fileName)
 	return 0;
 }
 
+int saveTemp(char *filePath, char *fileName)
+{
+	FILE *ofp;
+	char *newFileName = NULL;
+
+	newFileName = (char *)malloc(strlen(filePath) + strlen(fileName) + 1);
+	if(newFileName == NULL)
+	{
+		fprintf(stderr, "Out of memory\n");
+		return 1;
+	}
+	strcpy(newFileName, filePath);
+	strcat(newFileName, fileName);
+
+	ofp = fopen(newFileName, "w");
+	if(ofp == NULL)
+	{
+		fprintf(stderr, "ERROR: (saveTemp) Can't open %s\n", newFileName);
+		free(newFileName);
+		return 1;
+	}
+
+	fprintf(ofp, "#Temporary file used by wirelessConnect\n");
+	fprintf(ofp, "STATUS: %d\n", CurNetwork.status);
+	fclose(ofp);
+	free(newFileName);
+
+	return 0;
+}
+
 char *getHomeDir(char *home)
 {
 	if(home != NULL)
@@ -253,10 +334,10 @@ char *getHomeDir(char *home)
 		free(home);
 	}
 
-	home = (char *)malloc(strlen(getenv("HOME")) + strlen("/.wirCon") + 1);
+	home = (char *)malloc(strlen(getenv("HOME")) + strlen("/.wiCon") + 1);
 	strcpy(home, getenv("HOME"));
-	strcat(home, "/.wirCon");
-	mkdir(home, 0755); // create $HOME/.wirCon if it doesn't exist
+	strcat(home, "/.wiCon");
+	mkdir(home, 0755); // create $HOME/.wiCon if it doesn't exist
 	printf("home: %s\n", home);
 
 	return home;

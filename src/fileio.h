@@ -9,7 +9,9 @@
 int fgetLine(FILE *fp, char line[], int max);
 int getWords(char *line, char *words[], int maxwords);
 int loadConfig(char *filePath, char *fileName);
+int loadTemp(char *filePath, char *fileName);
 int saveConfig(char *filePath, char *fileName);
+int saveTemp(char *filePath, char *fileName);
 char *getHomeDir(char *home);
 
 extern char *homeDir;

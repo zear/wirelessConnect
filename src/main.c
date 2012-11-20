@@ -26,6 +26,7 @@ int main()
 	}
 
 	saveConfig(homeDir, "/config.cfg");
+	saveTemp("/tmp", "/.wiCon.tmp");
 
 	clean();
 
