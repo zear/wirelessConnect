@@ -32,10 +32,23 @@ int networkConnect()
 	sprintf(cmdSetMode, "ifconfig %s up", CurNetwork.interface);
 	sprintf(cmdSetIfaceDown, "ifconfig %s down", CurNetwork.interface);
 	sprintf(cmdSetEssid, "iwconfig %s essid \"%s\"", CurNetwork.interface, CurNetwork.essid);
-	sprintf(cmdSetWepKey, "iwconfig %s key s:%s", CurNetwork.interface, CurNetwork.key);
-	sprintf(cmdSetWpaPassphrase, "wpa_passphrase \"%s\" \"%s\" > /tmp/wpa.conf", CurNetwork.essid, CurNetwork.key);
-	sprintf(cmdSetWpaSup, "wpa_supplicant -B -Dwext -i%s -c/tmp/wpa.conf", CurNetwork.interface);
 	sprintf(cmdSetDhcp, "udhcpc -i %s -n", CurNetwork.interface);
+	switch(CurNetwork.encryption)
+	{
+		case ENC_WEP:
+			sprintf(cmdSetWepKey, "iwconfig %s key s:%s", CurNetwork.interface, CurNetwork.key);
+			break;
+		case ENC_WEP_NUM:
+			sprintf(cmdSetWepKey, "iwconfig %s key %s", CurNetwork.interface, CurNetwork.key);
+			break;
+		case ENC_WPA:
+			sprintf(cmdSetWpaPassphrase, "wpa_passphrase \"%s\" \"%s\" > /tmp/wpa.conf", CurNetwork.essid, CurNetwork.key);
+			sprintf(cmdSetWpaSup, "wpa_supplicant -B -Dwext -i%s -c/tmp/wpa.conf", CurNetwork.interface);
+			break;
+
+		default:
+			break;
+	}
 
 	system(cmdSetIfaceDown);
 	if(system(cmdSetMode))
@@ -56,6 +69,7 @@ int networkConnect()
 			sleep(1);
 			break;
 		case ENC_WEP:
+		case ENC_WEP_NUM:
 			if(system(cmdSetWepKey))
 			{
 				return 1;

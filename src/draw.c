@@ -29,8 +29,6 @@ void drawMenu()
 	}
 	else
 	{
-		//drawText("Wireless Connect", 100, 20, &FontLarge);
-
 		drawText("CARD:", 70, 5, &FontUnifont);
 		drawText(CurNetwork.interface, 130, 5, &FontUnifont);
 		drawText("MODE:", 70, 20, &FontUnifont);
@@ -38,16 +36,16 @@ void drawMenu()
 		{
 			case NMODE_ADHOC:
 				drawText("AD-HOC", 130, 20, &FontUnifont);
-			break;
+				break;
 			case NMODE_MANAGED:
 				drawText("MANAGED", 130, 20, &FontUnifont);
-			break;
+				break;
 			case NMODE_MASTER:
 				drawText("MASTER", 130, 20, &FontUnifont);
-			break;
+				break;
 
 			default:
-			break;
+				break;
 		}
 		drawText("ESSID:", 70, 35, &FontUnifont);
 		drawText(CurNetwork.essid, 130, 35, &FontUnifont);
@@ -55,44 +53,47 @@ void drawMenu()
 		switch(CurNetwork.encryption)
 		{
 			case ENC_NONE:
-			drawText("NONE (OPEN)", 130, 50, &FontUnifont);
-			drawText("PASS:", 70, 65, &FontUnifont);
-			drawText("N/A", 130, 65, &FontUnifont);
-			break;
+				drawText("NONE (OPEN)", 130, 50, &FontUnifont);
+				drawText("PASS:", 70, 65, &FontUnifont);
+				drawText("N/A", 130, 65, &FontUnifont);
+				break;
 			case ENC_WEP:
-			drawText("WEP", 130, 50, &FontUnifont);
-			drawText("PASS:", 70, 65, &FontUnifont);
-			drawText(CurNetwork.key, 130, 65, &FontUnifont);
-
-			break;
+				drawText("WEP", 130, 50, &FontUnifont);
+				drawText("PASS:", 70, 65, &FontUnifont);
+				drawText(CurNetwork.key, 130, 65, &FontUnifont);
+				break;
+			case ENC_WEP_NUM:
+				drawText("WEP (NUMERIC KEY)", 130, 50, &FontUnifont);
+				drawText("PASS:", 70, 65, &FontUnifont);
+				drawText(CurNetwork.key, 130, 65, &FontUnifont);
+				break;
 			case ENC_WPA:
-			drawText("WPA", 130, 50, &FontUnifont);
-			drawText("PASS:", 70, 65, &FontUnifont);
-			drawText(CurNetwork.key, 130, 65, &FontUnifont);
-
-			break;
+				drawText("WPA", 130, 50, &FontUnifont);
+				drawText("PASS:", 70, 65, &FontUnifont);
+				drawText(CurNetwork.key, 130, 65, &FontUnifont);
+				break;
 
 			default:
-			break;
+				break;
 		}
 		drawText("STATUS:", 70, 80, &FontUnifont);
 		switch(CurNetwork.status)
 		{
 			case STATUS_ON:
-			drawText("ON", 130, 80, &FontUnifont);
-			break;
+				drawText("ON", 130, 80, &FontUnifont);
+				break;
 			case STATUS_OFF:
-			drawText("OFF", 130, 80, &FontUnifont);
-			break;
+				drawText("OFF", 130, 80, &FontUnifont);
+				break;
 			case STATUS_CONNECTING:
-			drawText("CONNECTING...", 130, 80, &FontUnifont);
-			break;
+				drawText("CONNECTING...", 130, 80, &FontUnifont);
+				break;
 			case STATUS_FAILED:
-			drawText("FAILED TO CONNECT", 130, 80, &FontUnifont);
-			break;
+				drawText("FAILED TO CONNECT", 130, 80, &FontUnifont);
+				break;
 
 			default:
-			break;
+				break;
 		}
 
 		drawText("v0.1.0", SCREEN_WIDTH - 30, SCREEN_HEIGHT - FontSmall.height, &FontSmall);

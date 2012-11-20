@@ -109,7 +109,7 @@ void menuAction(MenuItem *Item)
 			break;
 		case ACTION_OPTIONS_ENCRYPTION:
 			CurNetwork.encryption++;
-			if(CurNetwork.encryption > 2)
+			if(CurNetwork.encryption > 3)
 			{
 				CurNetwork.encryption = 0;
 			}

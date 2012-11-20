@@ -20,6 +20,7 @@ typedef enum NetEncryptionEnum
 {
 	ENC_NONE,
 	ENC_WEP,
+	ENC_WEP_NUM,
 	ENC_WPA
 } NetEncryption;
 
