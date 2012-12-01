@@ -5,10 +5,15 @@
 #include <SDL.h>
 
 void drawText(char *text, int x, int y, Font *Font);
+void drawTextConcat(char *label, char *value, int x, int y, Font *font);
+
 void drawBackground(int r, int g, int b);
 void drawKeyboard();
+
 SDL_Surface *loadImage(char *fileName);
+
 void clipImage(SDL_Rect *source, int tileWidth, int tileHeight, int rows, int numOfTiles);
+
 void applySurface(SDL_Surface *source, SDL_Surface *destination, int x, int y, SDL_Rect *clip);
 int updateScreen();
 

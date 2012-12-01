@@ -9,6 +9,29 @@
 #include "SDLgfx.h"
 #include "SDLmain.h"
 
+char *mode[] =
+    {
+        "MANAGED",
+        "AD-HOC",
+        "MASTER"
+    };
+
+char *encode[] =
+    {
+        "NONE (OPEN)",
+        "WEP",
+        "WEP (NUMERIC KEY)",
+        "WPA"
+    };
+
+char *status[] =
+    {
+        "OFF",
+        "ON",
+        "CONNECTING...",
+        "FAILED TO CONNECT"
+    };
+
 void drawMenu()
 {
 	drawBackground(0, 0, 0);
@@ -20,93 +43,27 @@ void drawMenu()
 			drawKeyboard();
 		}
 
-                #if 0
 		drawText("A: TYPE", 15, 200, &FontUnifont);
-                drawText("B: DELETE", 90, 200, &FontUnifont);
-                drawText("R: CLEAR", 200, 200, &FontUnifont);
-                drawText("Y: SPACE", 15, 215, &FontUnifont);
-                drawText("START: APPLY", 90, 215, &FontUnifont);
-                drawText("SELECT: REJECT", 200, 215, &FontUnifont);
-                #endif
-                drawText("A: TYPE\n"
-                "B: DELETE\n"
-                "R: CLEAR\n"
-                "Y: SPACE\n"
-                "START: APPLY\n"
-                "SELECT: REJECT\n" , 15, 200, &FontUnifont);
+		drawText("B: DELETE", 90, 200, &FontUnifont);
+		drawText("R: CLEAR", 200, 200, &FontUnifont);
+		drawText("Y: SPACE", 15, 215, &FontUnifont);
+		drawText("START: APPLY", 90, 215, &FontUnifont);
+		drawText("SELECT: REJECT", 200, 215, &FontUnifont);
 	}
 	else
 	{
-		drawText("CARD:", 70, 5, &FontUnifont);
-		drawText(CurNetwork.interface, 130, 5, &FontUnifont);
-		drawText("MODE:", 70, 20, &FontUnifont);
-		switch(CurNetwork.mode)
-		{
-			case NMODE_ADHOC:
-				drawText("AD-HOC", 130, 20, &FontUnifont);
-				break;
-			case NMODE_MANAGED:
-				drawText("MANAGED", 130, 20, &FontUnifont);
-				break;
-			case NMODE_MASTER:
-				drawText("MASTER", 130, 20, &FontUnifont);
-				break;
+		drawTextConcat("CARD:   ", CurNetwork.interface, 70, 5, &FontUnifont);
+		drawTextConcat("MODE:   ", mode[CurNetwork.mode], 70, 20, &FontUnifont);
+		drawTextConcat("ESSID:  ", CurNetwork.essid, 70, 35, &FontUnifont);
+		drawTextConcat("ENC:    ", encode[CurNetwork.encryption], 70, 50, &FontUnifont);
+		drawTextConcat("PASS:   ", (CurNetwork.encryption == ENC_NONE) ? "N/A": CurNetwork.key, 70, 65, &FontUnifont);
+		drawTextConcat("STATUS: ", status[CurNetwork.status], 70, 80, &FontUnifont);
 
-			default:
-				break;
-		}
-		drawText("ESSID:", 70, 35, &FontUnifont);
-		drawText(CurNetwork.essid, 130, 35, &FontUnifont);
-		drawText("ENC:", 70, 50, &FontUnifont);
-		switch(CurNetwork.encryption)
-		{
-			case ENC_NONE:
-				drawText("NONE (OPEN)", 130, 50, &FontUnifont);
-				drawText("PASS:", 70, 65, &FontUnifont);
-				drawText("N/A", 130, 65, &FontUnifont);
-				break;
-			case ENC_WEP:
-				drawText("WEP", 130, 50, &FontUnifont);
-				drawText("PASS:", 70, 65, &FontUnifont);
-				drawText(CurNetwork.key, 130, 65, &FontUnifont);
-				break;
-			case ENC_WEP_NUM:
-				drawText("WEP (NUMERIC KEY)", 130, 50, &FontUnifont);
-				drawText("PASS:", 70, 65, &FontUnifont);
-				drawText(CurNetwork.key, 130, 65, &FontUnifont);
-				break;
-			case ENC_WPA:
-				drawText("WPA", 130, 50, &FontUnifont);
-				drawText("PASS:", 70, 65, &FontUnifont);
-				drawText(CurNetwork.key, 130, 65, &FontUnifont);
-				break;
-
-			default:
-				break;
-		}
-		drawText("STATUS:", 70, 80, &FontUnifont);
-		switch(CurNetwork.status)
-		{
-			case STATUS_ON:
-				drawText("ON", 130, 80, &FontUnifont);
-				break;
-			case STATUS_OFF:
-				drawText("OFF", 130, 80, &FontUnifont);
-				break;
-			case STATUS_CONNECTING:
-				drawText("CONNECTING...", 130, 80, &FontUnifont);
-				break;
-			case STATUS_FAILED:
-				drawText("FAILED TO CONNECT", 130, 80, &FontUnifont);
-				break;
-
-			default:
-				break;
-		}
+		drawText("IP:", 70, 95, &FontUnifont);
 
 		drawText("v0.1.0", SCREEN_WIDTH - 30, SCREEN_HEIGHT - FontSmall.height, &FontSmall);
 
-		menuDraw(CurrentMenu, 100, 100);
+		menuDraw(CurrentMenu, 100, 115);
 	}
 }
 

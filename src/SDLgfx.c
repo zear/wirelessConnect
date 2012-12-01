@@ -66,6 +66,13 @@ void drawText(char *text, int x, int y, Font *Font)
 	}
 }
 
+void drawTextConcat(char *label, char *value, int x, int y, Font *font){
+  char buff[128];
+
+  snprintf(buff, 128, "%s%s", label, value);
+  drawText(buff, x, y, font);
+}
+
 void drawBackground(int r, int g, int b)
 {
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, r, g, b));
