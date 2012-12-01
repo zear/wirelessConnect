@@ -244,6 +244,7 @@ int loadTemp(char *filePath, char *fileName)
 	{
 		n = getWords(line, words, MAX_WORDS);
 
+		if (n > 0)
 		if(!strcmp(words[0], "STATUS:"))
 		{
 			if(n < 1)

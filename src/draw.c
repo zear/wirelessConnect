@@ -20,12 +20,20 @@ void drawMenu()
 			drawKeyboard();
 		}
 
+                #if 0
 		drawText("A: TYPE", 15, 200, &FontUnifont);
-		drawText("B: DELETE", 90, 200, &FontUnifont);
-		drawText("R: CLEAR", 200, 200, &FontUnifont);
-		drawText("Y: SPACE", 15, 215, &FontUnifont);
-		drawText("START: APPLY", 90, 215, &FontUnifont);
-		drawText("SELECT: REJECT", 200, 215, &FontUnifont);
+                drawText("B: DELETE", 90, 200, &FontUnifont);
+                drawText("R: CLEAR", 200, 200, &FontUnifont);
+                drawText("Y: SPACE", 15, 215, &FontUnifont);
+                drawText("START: APPLY", 90, 215, &FontUnifont);
+                drawText("SELECT: REJECT", 200, 215, &FontUnifont);
+                #endif
+                drawText("A: TYPE\n"
+                "B: DELETE\n"
+                "R: CLEAR\n"
+                "Y: SPACE\n"
+                "START: APPLY\n"
+                "SELECT: REJECT\n" , 15, 200, &FontUnifont);
 	}
 	else
 	{
