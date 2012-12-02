@@ -41,6 +41,8 @@ void menuInput();
 void menuDrawSingle(MenuContainer *Container, int number, int x, int y);
 void menuDraw(MenuContainer *Container, int x, int y);
 
+void updateIpAddress();
+
 extern MenuContainer *CurrentMenu;
 extern MenuItem *SelectedItem;
 

@@ -56,6 +56,8 @@ void logicInit()
 	{
 		CurNetwork.status = STATUS_OFF;
 	}
+	else
+	  updateIpAddress();
 	Keyboard.inited = 0;
 	Keyboard.input = NULL;
 
