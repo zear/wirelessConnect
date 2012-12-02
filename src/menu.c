@@ -14,8 +14,9 @@ MenuItem *SelectedItem = NULL;
 
 MenuContainer *MenuMain = NULL;
 MenuContainer *MenuOptions = NULL;
+MenuContainer *MenuProfiles = NULL;
 
-MenuContainer *menuCreateNew(MenuContainer *Container, int number, char *caption, MenuAction Action)
+MenuContainer *menuCreateNew(MenuContainer *Container, int number, char *caption, void *callback)
 {
 	MenuItem *NewItem = NULL;
 
@@ -39,7 +40,7 @@ MenuContainer *menuCreateNew(MenuContainer *Container, int number, char *caption
 	}
 
 	NewItem->number = number;
-	NewItem->Action = Action;
+	NewItem->callback = callback;
 	strcpy(NewItem->caption, caption);
 
 	NewItem->Next = Container->Menu;
@@ -66,89 +67,105 @@ MenuItem *menuSwitchItem(MenuContainer *Container, int number)
 	return NULL;
 }
 
-void menuAction(MenuItem *Item)
+void actOptions(MenuItem *this)
 {
-	switch(Item->Action)
-	{
-		case ACTION_OPTIONS:
-			CurrentMenu = MenuOptions;
-			SelectedItem = menuSwitchItem(CurrentMenu, 0);
-			break;
-		case ACTION_CONNECT:
-			if(CurNetwork.status == STATUS_OFF)
-			{
-				CurNetwork.status = STATUS_CONNECTING;
-				if(!networkConnect())
-				{
-					CurNetwork.status = STATUS_ON;
-				}
-				else
-				{
-					CurNetwork.status = STATUS_FAILED;
-				}
-			}
-			else
-			{
-				networkDisconnect();
-				CurNetwork.status = STATUS_OFF;
-			}
-			break;
-		case ACTION_QUIT:
-			setGameState(STATE_EXIT);
-			break;
-		case ACTION_OPTIONS_MODE:
-			CurNetwork.mode++;
-			if(CurNetwork.mode > 2)
-			{
-				CurNetwork.mode = 0;
-			}
-			break;
-		case ACTION_OPTIONS_ESSID:
-			Keyboard.enabled = 1;
-			Keyboard.inputLen = 59;
-			Keyboard.type = OSK_ALPHANUM;
-			Keyboard.source = CurNetwork.essid;
-			break;
-		case ACTION_OPTIONS_ENCRYPTION:
-			CurNetwork.encryption++;
-			if(CurNetwork.encryption > 3)
-			{
-				CurNetwork.encryption = 0;
-			}
-			break;
-		case ACTION_OPTIONS_PASSWORD:
-			Keyboard.enabled = 1;
-			Keyboard.inputLen = 59;
-			Keyboard.type = OSK_ALPHANUM;
-			Keyboard.source = CurNetwork.key;
-			break;
-		case ACTION_OPTIONS_DHCP:
-			CurNetwork.dhcp++;
-			if(CurNetwork.dhcp > 1)
-			{
-				CurNetwork.dhcp = 0;
-			}
-			break;
-		case ACTION_OPTIONS_IP:
-			Keyboard.enabled = 1;
-			Keyboard.inputLen = 14;
-			Keyboard.type = OSK_IP;
-			Keyboard.source = CurNetwork.ip;
-			break;
-		case ACTION_OPTIONS_NETMASK:
-			Keyboard.enabled = 1;
-			Keyboard.inputLen = 14;
-			Keyboard.type = OSK_NUMERIC;
-			Keyboard.source = CurNetwork.netmask;
-			break;
-		case ACTION_OPTIONS_BACK:
-			CurrentMenu = MenuMain;
-			SelectedItem = menuSwitchItem(CurrentMenu, 0);
-			break;
+	CurrentMenu = MenuOptions;
+	SelectedItem = menuSwitchItem(CurrentMenu, 0);
+}
 
-		default:
-			break;
+void actConnect(MenuItem *this)
+{
+	if(CurNetwork.status == STATUS_OFF)
+	{
+		CurNetwork.status = STATUS_CONNECTING;
+		if(!networkConnect())
+		{
+			CurNetwork.status = STATUS_ON;
+		}
+		else
+		{
+			CurNetwork.status = STATUS_FAILED;
+		}
 	}
+	else
+	{
+		networkDisconnect();
+		CurNetwork.status = STATUS_OFF;
+	}
+}
+
+void actQuit(MenuItem *this)
+{
+	setGameState(STATE_EXIT);
+}
+
+void actOptionsMode(MenuItem *this)
+{
+	CurNetwork.mode++;
+	if(CurNetwork.mode > 2)
+	{
+		CurNetwork.mode = 0;
+	}
+}
+
+void actOptionsESSID(MenuItem *this)
+{
+	Keyboard.enabled = 1;
+	Keyboard.inputLen = 59;
+	Keyboard.type = OSK_ALPHANUM;
+	Keyboard.source = CurNetwork.essid;
+}
+
+void actOptionsEnc(MenuItem *this)
+{
+	CurNetwork.encryption++;
+	if(CurNetwork.encryption > 3)
+	{
+		CurNetwork.encryption = 0;
+	}
+}
+
+void actOptionsPassword(MenuItem *this)
+{
+	Keyboard.enabled = 1;
+	Keyboard.inputLen = 59;
+	Keyboard.type = OSK_ALPHANUM;
+	Keyboard.source = CurNetwork.key;
+}
+
+void actOptionsDHCP(MenuItem *this)
+{
+	CurNetwork.dhcp++;
+	if(CurNetwork.dhcp > 1)
+	{
+		CurNetwork.dhcp = 0;
+	}
+}
+
+void actOptionsIP(MenuItem *this)
+{
+	Keyboard.enabled = 1;
+	Keyboard.inputLen = 14;
+	Keyboard.type = OSK_IP;
+	Keyboard.source = CurNetwork.ip;
+}
+
+void actOptionsNETMASK(MenuItem *this)
+{
+	Keyboard.enabled = 1;
+	Keyboard.inputLen = 14;
+	Keyboard.type = OSK_NUMERIC;
+	Keyboard.source = CurNetwork.netmask;
+}
+
+void actOptionsBack(MenuItem *this)
+{
+	CurrentMenu = MenuMain;
+	SelectedItem = menuSwitchItem(CurrentMenu, 0);
+}
+
+void actProfiles(){
+
 }
 
 void menuDeleteSingle(MenuContainer *Container)
@@ -174,21 +191,27 @@ void menuDeleteAll()
 	menuDeleteSingle(MenuMain);
 }
 
+void actionStub(MenuItem *this)
+{
+	printf("%i\n", this->number);
+}
+
 void menuLoadAll()
 {
-	MenuMain = menuCreateNew(MenuMain, 0, "NETWORK SETTINGS", ACTION_OPTIONS);
-	MenuMain = menuCreateNew(MenuMain, 1, "CONNECT/DISCONNECT", ACTION_CONNECT);
-	MenuMain = menuCreateNew(MenuMain, 2, "EXIT", ACTION_QUIT);
+	MenuMain = menuCreateNew(MenuMain, 0, "NETWORK SETTINGS", actOptions);
+	MenuMain = menuCreateNew(MenuMain, 1, "SELECT PROFILE", actProfiles );
+	MenuMain = menuCreateNew(MenuMain, 2, "CONNECT/DISCONNECT", actConnect);
+	MenuMain = menuCreateNew(MenuMain, 3, "EXIT", actQuit);
 
-	MenuOptions = menuCreateNew(MenuOptions, 0, "MODE", ACTION_OPTIONS_MODE);
-	MenuOptions = menuCreateNew(MenuOptions, 1, "ESSID", ACTION_OPTIONS_ESSID);
-	MenuOptions = menuCreateNew(MenuOptions, 2, "ENCRYPTION", ACTION_OPTIONS_ENCRYPTION);
-	MenuOptions = menuCreateNew(MenuOptions, 3, "PASSWORD", ACTION_OPTIONS_PASSWORD);
-	//MenuOptions = menuCreateNew(MenuOptions, 4, "DHCP", ACTION_OPTIONS_DHCP);
-	//MenuOptions = menuCreateNew(MenuOptions, 5, "IP", ACTION_OPTIONS_IP);
-	//MenuOptions = menuCreateNew(MenuOptions, 6, "NETMASK", ACTION_OPTIONS_NETMASK);
-	MenuOptions = menuCreateNew(MenuOptions, 4, "", ACTION_NONE);
-	MenuOptions = menuCreateNew(MenuOptions, 5, "BACK", ACTION_OPTIONS_BACK);
+	MenuOptions = menuCreateNew(MenuOptions, 0, "MODE", actOptionsMode);
+	MenuOptions = menuCreateNew(MenuOptions, 1, "ESSID", actOptionsESSID);
+	MenuOptions = menuCreateNew(MenuOptions, 2, "ENCRYPTION", actOptionsEnc);
+	MenuOptions = menuCreateNew(MenuOptions, 3, "PASSWORD", actOptionsPassword);
+	//MenuOptions = menuCreateNew(MenuOptions, 4, "DHCP", actOptionsDHCP);
+	//MenuOptions = menuCreateNew(MenuOptions, 5, "IP", actOptionsIP);
+	//MenuOptions = menuCreateNew(MenuOptions, 6, "NETMASK", actOptionsNETMASK);
+	MenuOptions = menuCreateNew(MenuOptions, 4, "", NULL);
+	MenuOptions = menuCreateNew(MenuOptions, 5, "BACK", actOptionsBack);
 
 	CurrentMenu = MenuMain;
 	SelectedItem = menuSwitchItem(CurrentMenu, 0);
@@ -223,7 +246,7 @@ void menuInput()
 		NewItem = menuSwitchItem(CurrentMenu, newItemNumber);
 		if(NewItem != NULL)
 		{
-			while(NewItem->Action == ACTION_NONE)
+			while(NewItem->callback == NULL)
 			{
 				if(NewItem->number < SelectedItem->number)
 				{
@@ -248,12 +271,14 @@ void menuInput()
 	if(keystate[SDLK_RETURN])
 	{
 		keystate[SDLK_RETURN] = 0;
-		menuAction(SelectedItem);
+		//menuAction(SelectedItem);
+		SelectedItem->callback(SelectedItem);
 	}
 	if(keystate[SDLK_LCTRL])
 	{
 		keystate[SDLK_LCTRL] = 0;
-		menuAction(SelectedItem);
+		//menuAction(SelectedItem);
+		SelectedItem->callback(SelectedItem);
 	}
 }
 

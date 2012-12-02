@@ -4,6 +4,7 @@
 typedef enum MenuActionEnum
 {
 	ACTION_NONE,
+	ACTION_PROFILES,
 	ACTION_OPTIONS,
 	ACTION_CONNECT,
 	ACTION_QUIT,
@@ -20,7 +21,8 @@ typedef enum MenuActionEnum
 typedef struct MenuItemStruct
 {
 	int number;
-	MenuAction Action;
+	//MenuAction Action;
+	void *(*callback) (void *this);
 	char caption[21];
 	struct MenuItemStruct *Next;
 } MenuItem;
@@ -31,7 +33,7 @@ typedef struct MenuContainerStruct
 	int size;
 } MenuContainer;
 
-MenuContainer *menuCreateNew(MenuContainer *Container, int number, char *caption, MenuAction Action);
+MenuContainer *menuCreateNew(MenuContainer *Container, int number, char *caption, void* callback);
 MenuItem *menuSwitchItem(MenuContainer *Container, int number);
 void menuAction(MenuItem *Item);
 void menuDeleteSingle(MenuContainer *Container);
