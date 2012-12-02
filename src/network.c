@@ -3,6 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <netinet/in.h>
+#include <net/if.h>
+
+#include <arpa/inet.h>
+
 char cmdSetIfaceUp[30];
 char cmdSetIfaceDown[30];
 char cmdSetMode[120];
@@ -102,8 +110,25 @@ int networkConnect()
 	}
 	if(system(cmdSetDhcp))
 	{
-		return 1;
+
+            return 1;
 	}
+
+        int fd;
+        struct ifreq ifr;
+        struct sockaddr_in *sock_in;
+
+        fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+        ifr.ifr_addr.sa_family = AF_INET;
+        strncpy(ifr.ifr_name, CurNetwork.interface, IFNAMSIZ-1);
+        sock_in = (struct sockaddr_in *)&ifr.ifr_addr;
+
+        ioctl(fd, SIOCGIFADDR, &ifr);
+
+        strncpy(CurNetwork.ip, inet_ntoa(sock_in->sin_addr), sizeof(CurNetwork.ip));
+
+        close(fd);
 
 	return 0;
 }
