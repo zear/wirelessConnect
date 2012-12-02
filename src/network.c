@@ -7,7 +7,11 @@
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 #include <net/if.h>
+#include <ifaddrs.h>
+#include <errno.h>
 
 #include <arpa/inet.h>
 
@@ -22,6 +26,10 @@ char cmdSetDhcp[30];
 
 void updateIpAddress()
 {
+#if 0
+	/*
+	 * DEPRECATED CODE.
+	 */
   int fd;
   struct ifreq ifr;
   struct sockaddr_in *sock_in;
@@ -37,6 +45,55 @@ void updateIpAddress()
   strncpy(CurNetwork.ip, inet_ntoa(sock_in->sin_addr), sizeof(CurNetwork.ip));
 
   close(fd);
+#endif
+
+  //-----------------------------------------------------------------------
+  // TODO: Take care of IPV6, and display that.
+  //-----------------------------------------------------------------------
+
+  struct ifaddrs *interfaces = NULL, *itrAddr = NULL;
+  void *addrPtr = NULL;
+  char buf[INET6_ADDRSTRLEN];
+
+  if (getifaddrs(&interfaces) == 0) //Queries the kernel for interfaces
+  	{
+  		for(itrAddr = interfaces; itrAddr != NULL; itrAddr = itrAddr->ifa_next) //Iterates through 'em.
+  			{
+  				if (strcmp(itrAddr->ifa_name, CurNetwork.interface)!=0) //Ignore anything we're not searching for.
+  					continue;
+
+  				if (itrAddr->ifa_addr->sa_family == AF_INET) //Is it IPV4 or IPV6?
+  					addrPtr = &((struct sockaddr_in *)itrAddr->ifa_addr)->sin_addr;
+  				else
+  					continue; //We still won't take care of IPV6.
+  				//addrPtr = &((struct sockaddr_in6 *)itrAddr->ifa_addr)->sin6_addr; //Not taking care of IPV6 atm
+
+  				inet_ntop(itrAddr->ifa_addr->sa_family, addrPtr, CurNetwork.ip, sizeof(CurNetwork.ip));
+  			}
+  	}
+
+  freeifaddrs(interfaces);
+  CurNetwork.status = STATUS_ON;
+}
+
+int queryInterfaceStatus()
+{
+  struct ifaddrs *interfaces = NULL, *itrAddr = NULL;
+  void *addrPtr = NULL;
+  char buf[INET6_ADDRSTRLEN];
+
+  if (getifaddrs(&interfaces) == 0) //Queries the kernel for interfaces
+  	{
+  		for(itrAddr = interfaces; itrAddr != NULL; itrAddr = itrAddr->ifa_next) //Iterates through 'em.
+  			{
+  				if (strcmp(itrAddr->ifa_name, CurNetwork.interface)!=0) //Ignore anything we're not searching for.
+  					continue;
+
+  				return itrAddr->ifa_flags & IFF_UP;
+  			}
+  	}
+
+  freeifaddrs(interfaces);
 }
 
 int networkConnect()

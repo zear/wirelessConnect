@@ -52,12 +52,13 @@ void logicInit()
 	loadFont(&FontUnifont, "./data/fontUnifont.bmp", 8, 15);
 
 	strcpy(CurNetwork.interface, "wlan0");
-	if(loadTemp("/tmp", "/.wiCon.tmp"))
+	if(!queryInterfaceStatus())
 	{
 		CurNetwork.status = STATUS_OFF;
 	}
 	else
 	  updateIpAddress();
+
 	Keyboard.inited = 0;
 	Keyboard.input = NULL;
 

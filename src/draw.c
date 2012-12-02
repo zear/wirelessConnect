@@ -59,7 +59,7 @@ void drawMenu()
 		drawTextConcat("PASS:   ", (CurNetwork.encryption == ENC_NONE) ? "N/A": CurNetwork.key, 70, 65, &FontUnifont);
 		drawTextConcat("STATUS: ", status[CurNetwork.status], 70, 80, &FontUnifont);
 
-		drawTextConcat("IP:     ", (strlen(CurNetwork.ip) < 1) ? "N/A" : CurNetwork.ip, 70, 95, &FontUnifont);
+		drawTextConcat("IP:     ", ((CurNetwork.status != STATUS_ON) || (strlen(CurNetwork.ip) < 1)) ? "N/A" : CurNetwork.ip, 70, 95, &FontUnifont);
 
 		drawText("v0.1.0", SCREEN_WIDTH - 30, SCREEN_HEIGHT - FontSmall.height, &FontSmall);
 

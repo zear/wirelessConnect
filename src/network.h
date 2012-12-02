@@ -48,4 +48,7 @@ extern Network CurNetwork;
 int networkConnect();
 int networkDisconnect();
 
+int queryInterfaceStatus();
+void updateIpAddress();
+
 #endif /* _NETWORK_H */
