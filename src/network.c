@@ -10,7 +10,9 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <net/if.h>
+#ifndef  _NO_IFADDRS
 #include <ifaddrs.h>
+#endif
 #include <errno.h>
 
 #include <arpa/inet.h>
@@ -26,7 +28,7 @@ char cmdSetDhcp[30];
 
 void updateIpAddress()
 {
-#if 0
+#ifdef _NO_IFADDRS
 	/*
 	 * DEPRECATED CODE.
 	 */
@@ -45,7 +47,7 @@ void updateIpAddress()
   strncpy(CurNetwork.ip, inet_ntoa(sock_in->sin_addr), sizeof(CurNetwork.ip));
 
   close(fd);
-#endif
+#else
 
   //-----------------------------------------------------------------------
   // TODO: Take care of IPV6, and display that.
@@ -74,10 +76,14 @@ void updateIpAddress()
 
   freeifaddrs(interfaces);
   CurNetwork.status = STATUS_ON;
+#endif
 }
 
 int queryInterfaceStatus()
 {
+#ifdef _NO_IFADDRS
+	return loadTemp("/tmp", "/.wiCon.tmp");
+#else
   struct ifaddrs *interfaces = NULL, *itrAddr = NULL;
   void *addrPtr = NULL;
   char buf[INET6_ADDRSTRLEN];
@@ -94,6 +100,7 @@ int queryInterfaceStatus()
   	}
 
   freeifaddrs(interfaces);
+#endif
 }
 
 int networkConnect()
