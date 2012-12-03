@@ -100,7 +100,7 @@ void menuLoadAll()
 
 	MenuProfile = menuCreateNew(MenuProfile, 0, "PROFILE SETTINGS", actOptions);
 	MenuProfile = menuCreateNew(MenuProfile, 1, "LOAD PROFILE", actProfiles );
-	MenuProfile = menuCreateNew(MenuProfile, 2, "SAVE PROFILE", actionStub );
+	MenuProfile = menuCreateNew(MenuProfile, 2, "SAVE PROFILE", actProfileSave );
 
 	MenuProfile = menuCreateNew(MenuProfile, 3, "", NULL );
 	MenuProfile = menuCreateNew(MenuProfile, 4, "BACK", actProfileBack );

@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "callbacks.h"
 #include "menu.h"
 #include "network.h"
 #include "onScreenKeyboard.h"
@@ -142,7 +143,7 @@ void actOptionsBack()
 	SelectedItem = menuSwitchItem(CurrentMenu, 0);
 }
 
-static void buildProfilesMenu()
+static int buildProfilesMenu()
 {
   struct dirent **namelist;
   int n, i=0;
@@ -155,6 +156,9 @@ static void buildProfilesMenu()
       		if (strlen(namelist[n]->d_name)<4)
       			continue;
 
+      		if (!strcmp(namelist[n]->d_name, "config.cfg"))
+      			continue;
+
       		char *s = &namelist[n]->d_name[strlen(namelist[n]->d_name) - 4];
 
           printf("%s\n", s);
@@ -162,10 +166,11 @@ static void buildProfilesMenu()
           	{
           		i++;
           		char buf[128];
+          		memset(&buf, '\0', sizeof(buf));
           		strncpy(buf, namelist[n]->d_name,strlen(namelist[n]->d_name) -4);
           		becomesUppercase(buf);
 
-          		MenuProfiles = menuCreateNew(MenuProfiles, i-1, buf, actionStub);
+          		MenuProfiles = menuCreateNew(MenuProfiles, i-1, buf, actProfileLoad);
           	}
           free(namelist[n]);
       }
@@ -175,13 +180,19 @@ static void buildProfilesMenu()
   MenuProfiles = menuCreateNew(MenuProfiles, i, "", NULL);
   MenuProfiles = menuCreateNew(MenuProfiles, i+1, "BACK" , actProfileBack);
 
+  return i;
 }
 
 void actProfiles(){
 	menuDeleteSingle(MenuProfiles);
 	MenuProfiles = NULL;
 
-	buildProfilesMenu();
+	if (buildProfilesMenu() < 1)
+		{
+			menuDeleteSingle(MenuProfiles);
+			printf("No saved profiles found.\n");
+			return;
+		}
 
 	CurrentMenu = MenuProfiles;
 	SelectedItem = menuSwitchItem(MenuProfiles, 0);
@@ -190,4 +201,22 @@ void actProfiles(){
 void actProfile(){
 	CurrentMenu = MenuProfile;
 	SelectedItem = menuSwitchItem(MenuProfile, 0);
+}
+
+void actProfileSave(){
+	char buf[128];
+
+	snprintf(buf, sizeof(buf), "/%s%s" ,CurNetwork.essid, ".cfg");
+	becomesLowercase(buf);
+
+	saveConfig(homeDir, buf);
+}
+
+void actProfileLoad(MenuItem *this){
+	char buf[128];
+	snprintf(buf, sizeof(buf), "/%s%s", this->caption,".cfg");
+	becomesLowercase(buf);
+
+	printf("Loading profile %s.\n", buf);
+	loadConfig(homeDir, buf, &CurNetwork);
 }

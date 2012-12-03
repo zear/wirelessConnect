@@ -149,7 +149,7 @@ int loadConfig(char *filePath, char *fileName, Network *network)
 			else
 			{
 				memset(&network->interface, 0, sizeof(network->interface)); // clean the default interface
-				strcpy(network->interface, words[1]);
+				strncpy(network->interface, words[1], sizeof(network->interface));
 			}
 		}
 		if(!strcmp(words[0], "MODE:"))
@@ -171,7 +171,7 @@ int loadConfig(char *filePath, char *fileName, Network *network)
 			}
 			else
 			{
-				strcat(network->essid, words[1]);
+				strncpy(network->essid, words[1], sizeof(network->key));
 			}
 		}
 		if(!strcmp(words[0], "ENCRYPTION:"))
@@ -193,7 +193,7 @@ int loadConfig(char *filePath, char *fileName, Network *network)
 			}
 			else
 			{
-				strcat(network->key, words[1]);
+				strncpy(network->key, words[1], sizeof(network->key));
 			}
 		}
 		if(!strcmp(words[0], "DHCP:"))

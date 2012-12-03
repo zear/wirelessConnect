@@ -8,6 +8,7 @@
 #ifndef CALLBACKS_H_
 #define CALLBACKS_H_
 
+#include "menu.h"
 
 void actionStub(MenuItem *this);
 
@@ -29,6 +30,7 @@ void actOptionsNETMASK();
 void actOptionsBack();
 
 void actProfiles();
-
+void actProfileSave();
+void actProfileLoad(MenuItem *this);
 
 #endif /* CALLBACKS_H_ */
