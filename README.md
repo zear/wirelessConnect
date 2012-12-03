@@ -1,6 +1,8 @@
 A simple SDL wireless gui. Licensed with GPLv2.
 
-By Artur Rojek <zeartul@gmail.com>
+By:
+Artur Rojek <zeartul@gmail.com>
+Johnny on Flame <johnnyonflame@hotmail.com>
 
 This program is using the following assets:
 * GNU Unifont by Roman Czyborra <roman@czyborra.com> http://czyborra.com/unifont/
