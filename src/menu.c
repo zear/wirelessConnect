@@ -8,6 +8,8 @@
 #include "logic.h"
 #include "network.h"
 #include "onScreenKeyboard.h"
+#include "fileio.h"
+#include <dirent.h>
 
 MenuContainer *CurrentMenu = NULL;
 MenuItem *SelectedItem = NULL;
@@ -15,6 +17,24 @@ MenuItem *SelectedItem = NULL;
 MenuContainer *MenuMain = NULL;
 MenuContainer *MenuOptions = NULL;
 MenuContainer *MenuProfiles = NULL;
+
+void listProfiles()
+{
+  struct dirent **namelist;
+  int n;
+
+  n = scandir(homeDir, &namelist, 0, alphasort);
+  if (n < 0)
+      perror("scandir");
+  else {
+      while (n--) {
+          printf("%s\n", namelist[n]->d_name);
+          free(namelist[n]);
+      }
+      free(namelist);
+  }
+
+}
 
 MenuContainer *menuCreateNew(MenuContainer *Container, int number, char *caption, void *callback)
 {
@@ -67,13 +87,24 @@ MenuItem *menuSwitchItem(MenuContainer *Container, int number)
 	return NULL;
 }
 
-void actOptions(MenuItem *this)
+/*
+ * TODO(JohnnyonFlame):
+ * Move all of these callbacks into it's own source files.
+ */
+
+
+void actionStub(MenuItem *this)
+{
+	printf("MENU ITEM: %i IS A STUB. <fixme>\n", this->number);
+}
+
+void actOptions()
 {
 	CurrentMenu = MenuOptions;
 	SelectedItem = menuSwitchItem(CurrentMenu, 0);
 }
 
-void actConnect(MenuItem *this)
+void actConnect()
 {
 	if(CurNetwork.status == STATUS_OFF)
 	{
@@ -94,12 +125,12 @@ void actConnect(MenuItem *this)
 	}
 }
 
-void actQuit(MenuItem *this)
+void actQuit()
 {
 	setGameState(STATE_EXIT);
 }
 
-void actOptionsMode(MenuItem *this)
+void actOptionsMode()
 {
 	CurNetwork.mode++;
 	if(CurNetwork.mode > 2)
@@ -108,7 +139,7 @@ void actOptionsMode(MenuItem *this)
 	}
 }
 
-void actOptionsESSID(MenuItem *this)
+void actOptionsESSID()
 {
 	Keyboard.enabled = 1;
 	Keyboard.inputLen = 59;
@@ -116,7 +147,7 @@ void actOptionsESSID(MenuItem *this)
 	Keyboard.source = CurNetwork.essid;
 }
 
-void actOptionsEnc(MenuItem *this)
+void actOptionsEnc()
 {
 	CurNetwork.encryption++;
 	if(CurNetwork.encryption > 3)
@@ -125,7 +156,7 @@ void actOptionsEnc(MenuItem *this)
 	}
 }
 
-void actOptionsPassword(MenuItem *this)
+void actOptionsPassword()
 {
 	Keyboard.enabled = 1;
 	Keyboard.inputLen = 59;
@@ -133,7 +164,7 @@ void actOptionsPassword(MenuItem *this)
 	Keyboard.source = CurNetwork.key;
 }
 
-void actOptionsDHCP(MenuItem *this)
+void actOptionsDHCP()
 {
 	CurNetwork.dhcp++;
 	if(CurNetwork.dhcp > 1)
@@ -142,7 +173,7 @@ void actOptionsDHCP(MenuItem *this)
 	}
 }
 
-void actOptionsIP(MenuItem *this)
+void actOptionsIP()
 {
 	Keyboard.enabled = 1;
 	Keyboard.inputLen = 14;
@@ -150,7 +181,7 @@ void actOptionsIP(MenuItem *this)
 	Keyboard.source = CurNetwork.ip;
 }
 
-void actOptionsNETMASK(MenuItem *this)
+void actOptionsNETMASK()
 {
 	Keyboard.enabled = 1;
 	Keyboard.inputLen = 14;
@@ -158,14 +189,29 @@ void actOptionsNETMASK(MenuItem *this)
 	Keyboard.source = CurNetwork.netmask;
 }
 
-void actOptionsBack(MenuItem *this)
+void actOptionsBack()
 {
 	CurrentMenu = MenuMain;
 	SelectedItem = menuSwitchItem(CurrentMenu, 0);
 }
 
 void actProfiles(){
+	menuDeleteSingle(MenuProfiles);
+	MenuProfiles = NULL;
 
+	MenuProfiles = menuCreateNew(MenuProfiles, 0, "SELECT NETWORK 1", actionStub);
+	MenuProfiles = menuCreateNew(MenuProfiles, 1, "SELECT NETWORK 2", actionStub);
+	MenuProfiles = menuCreateNew(MenuProfiles, 2, "SELECT NETWORK 3", actionStub);
+	MenuProfiles = menuCreateNew(MenuProfiles, 3, "SELECT NETWORK 4", actionStub);
+	MenuProfiles = menuCreateNew(MenuProfiles, 4, "SELECT NETWORK 5", actionStub);
+	MenuProfiles = menuCreateNew(MenuProfiles, 5, "SELECT NETWORK 6", actionStub);
+	MenuProfiles = menuCreateNew(MenuProfiles, 6, "", NULL);
+	MenuProfiles = menuCreateNew(MenuProfiles, 7, "BACK", actOptionsBack);
+
+	listProfiles();
+
+	CurrentMenu = MenuProfiles;
+	SelectedItem = menuSwitchItem(MenuProfiles, 0);
 }
 
 void menuDeleteSingle(MenuContainer *Container)
@@ -189,11 +235,6 @@ void menuDeleteSingle(MenuContainer *Container)
 void menuDeleteAll()
 {
 	menuDeleteSingle(MenuMain);
-}
-
-void actionStub(MenuItem *this)
-{
-	printf("%i\n", this->number);
 }
 
 void menuLoadAll()
@@ -282,7 +323,7 @@ void menuInput()
 	}
 }
 
-void menuDrawSingle(MenuContainer *Container, int number, int x, int y)
+void menuDrawSingle(MenuContainer *Container, int number, int x, int y, int sz)
 {
 	MenuItem *CurrentItem = Container->Menu;
 
@@ -292,16 +333,38 @@ void menuDrawSingle(MenuContainer *Container, int number, int x, int y)
 		return;
 	}
 
+	int min = SelectedItem->number-3;
+
 	while(CurrentItem != NULL)
 	{
+		if (CurrentItem->number < min && sz>7)
+			{
+				CurrentItem = CurrentItem->Next;
+				continue;
+			}
+
 		if(CurrentItem->number == number)
 		{
-			drawText(CurrentItem->caption, x, y, &FontUnifont);
+				int p;
+				if (min >= 0 && sz>7)
+					{
+						p = CurrentItem->number - min;
+						printf("%i\n", sz);
+					}
+				else
+					{
+						p = CurrentItem->number;
+					}
+
+				p *= 15;
+				p += y;
+
+			drawText(CurrentItem->caption, x, p, &FontUnifont);
 
 			if(CurrentItem == SelectedItem)
 			{
-				drawText(">", 60, y, &FontUnifont);
-				drawText("<", SCREEN_WIDTH - 60, y, &FontUnifont);
+				drawText(">", 60, p, &FontUnifont);
+				drawText("<", SCREEN_WIDTH - 60, p, &FontUnifont);
 			}
 			break;
 		}
@@ -316,6 +379,6 @@ void menuDraw(MenuContainer *Container, int x, int y)
 
 	for(i = 0; i < CurrentMenu->size; i++)
 	{
-		menuDrawSingle(CurrentMenu, i, x, y + i * 15); 
+		menuDrawSingle(CurrentMenu, i, x, y, CurrentMenu->size);
 	}
 }

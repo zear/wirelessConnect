@@ -108,7 +108,7 @@ int getWords(char *line, char *words[], int maxWords)
 	return nWords;
 }
 
-int loadConfig(char *filePath, char *fileName)
+int loadConfig(char *filePath, char *fileName, Network *network)
 {
 	FILE *ifp;
 	char *newFileName = NULL;
@@ -148,8 +148,8 @@ int loadConfig(char *filePath, char *fileName)
 			}
 			else
 			{
-				memset(&CurNetwork.interface, 0, sizeof(CurNetwork.interface)); // clean the default interface
-				strcpy(CurNetwork.interface, words[1]);
+				memset(&network->interface, 0, sizeof(network->interface)); // clean the default interface
+				strcpy(network->interface, words[1]);
 			}
 		}
 		if(!strcmp(words[0], "MODE:"))
@@ -160,7 +160,7 @@ int loadConfig(char *filePath, char *fileName)
 			}
 			else
 			{
-				CurNetwork.mode = atoi(words[1]);
+				network->mode = atoi(words[1]);
 			}
 		}
 		if(!strcmp(words[0], "ESSID:"))
@@ -171,7 +171,7 @@ int loadConfig(char *filePath, char *fileName)
 			}
 			else
 			{
-				strcat(CurNetwork.essid, words[1]);
+				strcat(network->essid, words[1]);
 			}
 		}
 		if(!strcmp(words[0], "ENCRYPTION:"))
@@ -182,7 +182,7 @@ int loadConfig(char *filePath, char *fileName)
 			}
 			else
 			{
-				CurNetwork.encryption = atoi(words[1]);
+				network->encryption = atoi(words[1]);
 			}
 		}
 		if(!strcmp(words[0], "KEY:"))
@@ -193,7 +193,7 @@ int loadConfig(char *filePath, char *fileName)
 			}
 			else
 			{
-				strcat(CurNetwork.key, words[1]);
+				strcat(network->key, words[1]);
 			}
 		}
 		if(!strcmp(words[0], "DHCP:"))

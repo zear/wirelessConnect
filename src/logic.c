@@ -33,7 +33,7 @@ void changeGameState()
 	switch(NewGameState)
 	{
 		case STATE_MENU:
-			loadConfig(homeDir, "/config.cfg");
+			loadConfig(homeDir, "/config.cfg", &CurNetwork);
 			//loadConfig("./data/config.cfg");
 			break;
 
