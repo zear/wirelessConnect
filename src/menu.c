@@ -18,15 +18,6 @@ MenuContainer *MenuOptions = NULL;
 MenuContainer *MenuProfile = NULL;
 MenuContainer *MenuProfiles = NULL;
 
-void becomesUppercase(char *s)
-{
-	int i;
-	for (i=0;i<strlen(s);i++)
-		{
-			s[i] = toupper(s[i]);
-		}
-}
-
 MenuContainer *menuCreateNew(MenuContainer *Container, int number, char *caption, void *callback)
 {
 	MenuItem *NewItem = NULL;

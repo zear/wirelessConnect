@@ -16,6 +16,24 @@
 #include "logic.h"
 #include "fileio.h"
 
+void becomesUppercase(char *s)
+{
+	int i;
+	for (i=0;i<strlen(s);i++)
+		{
+			s[i] = toupper(s[i]);
+		}
+}
+
+void becomesLowercase(char *s)
+{
+	int i;
+	for (i=0;i<strlen(s);i++)
+		{
+			s[i] = tolower(s[i]);
+		}
+}
+
 void actionStub(MenuItem *this)
 {
 	printf("MENU ITEM: %i IS A STUB. <fixme>\n", this->number);
