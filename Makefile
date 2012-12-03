@@ -131,7 +131,9 @@ SRC =	src/main.c		\
 	src/onScreenKeyboard.c	\
 	src/SDLmain.c 		\
 	src/SDLgfx.c 		\
-	src/timer.c
+	src/timer.c			\
+	src/callbacks.c
+	
 OBJ = $(SRC:.c=.o)
 EXE = wirelessConnect.bin
 

@@ -35,5 +35,7 @@ extern MenuItem *SelectedItem;
 
 extern MenuContainer *MenuMain;
 extern MenuContainer *MenuOptions;
+extern MenuContainer *MenuProfiles;
+extern MenuContainer *MenuProfile;
 
 #endif /* _MENU_H_ */

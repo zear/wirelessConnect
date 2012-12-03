@@ -8,32 +8,23 @@
 #include "logic.h"
 #include "network.h"
 #include "onScreenKeyboard.h"
-#include "fileio.h"
-#include <dirent.h>
+#include "callbacks.h"
 
 MenuContainer *CurrentMenu = NULL;
 MenuItem *SelectedItem = NULL;
 
 MenuContainer *MenuMain = NULL;
 MenuContainer *MenuOptions = NULL;
+MenuContainer *MenuProfile = NULL;
 MenuContainer *MenuProfiles = NULL;
 
-void listProfiles()
+void becomesUppercase(char *s)
 {
-  struct dirent **namelist;
-  int n;
-
-  n = scandir(homeDir, &namelist, 0, alphasort);
-  if (n < 0)
-      perror("scandir");
-  else {
-      while (n--) {
-          printf("%s\n", namelist[n]->d_name);
-          free(namelist[n]);
-      }
-      free(namelist);
-  }
-
+	int i;
+	for (i=0;i<strlen(s);i++)
+		{
+			s[i] = toupper(s[i]);
+		}
 }
 
 MenuContainer *menuCreateNew(MenuContainer *Container, int number, char *caption, void *callback)
@@ -87,133 +78,6 @@ MenuItem *menuSwitchItem(MenuContainer *Container, int number)
 	return NULL;
 }
 
-/*
- * TODO(JohnnyonFlame):
- * Move all of these callbacks into it's own source files.
- */
-
-
-void actionStub(MenuItem *this)
-{
-	printf("MENU ITEM: %i IS A STUB. <fixme>\n", this->number);
-}
-
-void actOptions()
-{
-	CurrentMenu = MenuOptions;
-	SelectedItem = menuSwitchItem(CurrentMenu, 0);
-}
-
-void actConnect()
-{
-	if(CurNetwork.status == STATUS_OFF)
-	{
-		CurNetwork.status = STATUS_CONNECTING;
-		if(!networkConnect())
-		{
-			CurNetwork.status = STATUS_ON;
-		}
-		else
-		{
-			CurNetwork.status = STATUS_FAILED;
-		}
-	}
-	else
-	{
-		networkDisconnect();
-		CurNetwork.status = STATUS_OFF;
-	}
-}
-
-void actQuit()
-{
-	setGameState(STATE_EXIT);
-}
-
-void actOptionsMode()
-{
-	CurNetwork.mode++;
-	if(CurNetwork.mode > 2)
-	{
-		CurNetwork.mode = 0;
-	}
-}
-
-void actOptionsESSID()
-{
-	Keyboard.enabled = 1;
-	Keyboard.inputLen = 59;
-	Keyboard.type = OSK_ALPHANUM;
-	Keyboard.source = CurNetwork.essid;
-}
-
-void actOptionsEnc()
-{
-	CurNetwork.encryption++;
-	if(CurNetwork.encryption > 3)
-	{
-		CurNetwork.encryption = 0;
-	}
-}
-
-void actOptionsPassword()
-{
-	Keyboard.enabled = 1;
-	Keyboard.inputLen = 59;
-	Keyboard.type = OSK_ALPHANUM;
-	Keyboard.source = CurNetwork.key;
-}
-
-void actOptionsDHCP()
-{
-	CurNetwork.dhcp++;
-	if(CurNetwork.dhcp > 1)
-	{
-		CurNetwork.dhcp = 0;
-	}
-}
-
-void actOptionsIP()
-{
-	Keyboard.enabled = 1;
-	Keyboard.inputLen = 14;
-	Keyboard.type = OSK_IP;
-	Keyboard.source = CurNetwork.ip;
-}
-
-void actOptionsNETMASK()
-{
-	Keyboard.enabled = 1;
-	Keyboard.inputLen = 14;
-	Keyboard.type = OSK_NUMERIC;
-	Keyboard.source = CurNetwork.netmask;
-}
-
-void actOptionsBack()
-{
-	CurrentMenu = MenuMain;
-	SelectedItem = menuSwitchItem(CurrentMenu, 0);
-}
-
-void actProfiles(){
-	menuDeleteSingle(MenuProfiles);
-	MenuProfiles = NULL;
-
-	MenuProfiles = menuCreateNew(MenuProfiles, 0, "SELECT NETWORK 1", actionStub);
-	MenuProfiles = menuCreateNew(MenuProfiles, 1, "SELECT NETWORK 2", actionStub);
-	MenuProfiles = menuCreateNew(MenuProfiles, 2, "SELECT NETWORK 3", actionStub);
-	MenuProfiles = menuCreateNew(MenuProfiles, 3, "SELECT NETWORK 4", actionStub);
-	MenuProfiles = menuCreateNew(MenuProfiles, 4, "SELECT NETWORK 5", actionStub);
-	MenuProfiles = menuCreateNew(MenuProfiles, 5, "SELECT NETWORK 6", actionStub);
-	MenuProfiles = menuCreateNew(MenuProfiles, 6, "", NULL);
-	MenuProfiles = menuCreateNew(MenuProfiles, 7, "BACK", actOptionsBack);
-
-	listProfiles();
-
-	CurrentMenu = MenuProfiles;
-	SelectedItem = menuSwitchItem(MenuProfiles, 0);
-}
-
 void menuDeleteSingle(MenuContainer *Container)
 {
 	MenuItem *CurrentItem;
@@ -239,10 +103,17 @@ void menuDeleteAll()
 
 void menuLoadAll()
 {
-	MenuMain = menuCreateNew(MenuMain, 0, "NETWORK SETTINGS", actOptions);
-	MenuMain = menuCreateNew(MenuMain, 1, "SELECT PROFILE", actProfiles );
-	MenuMain = menuCreateNew(MenuMain, 2, "CONNECT/DISCONNECT", actConnect);
-	MenuMain = menuCreateNew(MenuMain, 3, "EXIT", actQuit);
+	MenuMain = menuCreateNew(MenuMain, 0, "NETWORK SETTINGS", actProfile);
+	MenuMain = menuCreateNew(MenuMain, 1, "CONNECT/DISCONNECT", actConnect);
+	MenuMain = menuCreateNew(MenuMain, 2, "EXIT", actQuit);
+
+	MenuProfile = menuCreateNew(MenuProfile, 0, "PROFILE SETTINGS", actOptions);
+	MenuProfile = menuCreateNew(MenuProfile, 1, "LOAD PROFILE", actProfiles );
+	MenuProfile = menuCreateNew(MenuProfile, 2, "SAVE PROFILE", actionStub );
+
+	MenuProfile = menuCreateNew(MenuProfile, 3, "", NULL );
+	MenuProfile = menuCreateNew(MenuProfile, 4, "BACK", actProfileBack );
+
 
 	MenuOptions = menuCreateNew(MenuOptions, 0, "MODE", actOptionsMode);
 	MenuOptions = menuCreateNew(MenuOptions, 1, "ESSID", actOptionsESSID);
