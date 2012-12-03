@@ -15,8 +15,8 @@ MenuItem *SelectedItem = NULL;
 
 MenuContainer *MenuMain = NULL;
 MenuContainer *MenuOptions = NULL;
-MenuContainer *MenuProfile = NULL;
-MenuContainer *MenuProfiles = NULL;
+MenuContainer *MenuNetwork = NULL;
+MenuContainer *MenuNetworks = NULL;
 
 MenuContainer *menuCreateNew(MenuContainer *Container, int number, char *caption, void *callback)
 {
@@ -94,16 +94,18 @@ void menuDeleteAll()
 
 void menuLoadAll()
 {
-	MenuMain = menuCreateNew(MenuMain, 0, "NETWORK SETTINGS", actProfile);
+	MenuMain = menuCreateNew(MenuMain, 0, "OPTIONS", actNetwork);
 	MenuMain = menuCreateNew(MenuMain, 1, "CONNECT/DISCONNECT", actConnect);
 	MenuMain = menuCreateNew(MenuMain, 2, "EXIT", actQuit);
 
-	MenuProfile = menuCreateNew(MenuProfile, 0, "PROFILE SETTINGS", actOptions);
-	MenuProfile = menuCreateNew(MenuProfile, 1, "LOAD PROFILE", actProfiles );
-	MenuProfile = menuCreateNew(MenuProfile, 2, "SAVE PROFILE", actProfileSave );
+	MenuNetwork = menuCreateNew(MenuNetwork, 0, "NETWORK SETTINGS", actOptions);
+	MenuNetwork = menuCreateNew(MenuNetwork, 1, "", NULL );
 
-	MenuProfile = menuCreateNew(MenuProfile, 3, "", NULL );
-	MenuProfile = menuCreateNew(MenuProfile, 4, "BACK", actProfileBack );
+	MenuNetwork = menuCreateNew(MenuNetwork, 2, "LOAD NETWORK", actNetworks );
+	MenuNetwork = menuCreateNew(MenuNetwork, 3, "SAVE NETWORK", actProfileSave );
+
+	MenuNetwork = menuCreateNew(MenuNetwork, 4, "", NULL );
+	MenuNetwork = menuCreateNew(MenuNetwork, 5, "BACK", actNetworkBack );
 
 
 	MenuOptions = menuCreateNew(MenuOptions, 0, "MODE", actOptionsMode);

@@ -16,9 +16,9 @@ void actOptions();
 void actConnect();
 void actQuit();
 
-void actProfileBack();
-void actProfile();
-void actProfiles();
+void actNetworkBack();
+void actNetwork();
+void actNetworks();
 
 void actOptionsMode();
 void actOptionsESSID();
@@ -29,7 +29,7 @@ void actOptionsIP();
 void actOptionsNETMASK();
 void actOptionsBack();
 
-void actProfiles();
+void actNetworks();
 void actProfileSave();
 void actProfileLoad(MenuItem *this);
 

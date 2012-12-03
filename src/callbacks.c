@@ -131,7 +131,7 @@ void actOptionsNETMASK()
 	Keyboard.source = CurNetwork.netmask;
 }
 
-void actProfileBack()
+void actNetworkBack()
 {
 	CurrentMenu = MenuMain;
 	SelectedItem = menuSwitchItem(CurrentMenu, 0);
@@ -139,7 +139,7 @@ void actProfileBack()
 
 void actOptionsBack()
 {
-	CurrentMenu = MenuProfile;
+	CurrentMenu = MenuNetwork;
 	SelectedItem = menuSwitchItem(CurrentMenu, 0);
 }
 
@@ -170,37 +170,37 @@ static int buildProfilesMenu()
           		strncpy(buf, namelist[n]->d_name,strlen(namelist[n]->d_name) -4);
           		becomesUppercase(buf);
 
-          		MenuProfiles = menuCreateNew(MenuProfiles, i-1, buf, actProfileLoad);
+          		MenuNetworks = menuCreateNew(MenuNetworks, i-1, buf, actProfileLoad);
           	}
           free(namelist[n]);
       }
       free(namelist);
   }
 
-  MenuProfiles = menuCreateNew(MenuProfiles, i, "", NULL);
-  MenuProfiles = menuCreateNew(MenuProfiles, i+1, "BACK" , actProfileBack);
+  MenuNetworks = menuCreateNew(MenuNetworks, i, "", NULL);
+  MenuNetworks = menuCreateNew(MenuNetworks, i+1, "BACK" , actNetworkBack);
 
   return i;
 }
 
-void actProfiles(){
-	menuDeleteSingle(MenuProfiles);
-	MenuProfiles = NULL;
+void actNetworks(){
+	menuDeleteSingle(MenuNetworks);
+	MenuNetworks = NULL;
 
 	if (buildProfilesMenu() < 1)
 		{
-			menuDeleteSingle(MenuProfiles);
+			menuDeleteSingle(MenuNetworks);
 			printf("No saved profiles found.\n");
 			return;
 		}
 
-	CurrentMenu = MenuProfiles;
-	SelectedItem = menuSwitchItem(MenuProfiles, 0);
+	CurrentMenu = MenuNetworks;
+	SelectedItem = menuSwitchItem(MenuNetworks, 0);
 }
 
-void actProfile(){
-	CurrentMenu = MenuProfile;
-	SelectedItem = menuSwitchItem(MenuProfile, 0);
+void actNetwork(){
+	CurrentMenu = MenuNetwork;
+	SelectedItem = menuSwitchItem(MenuNetwork, 0);
 }
 
 void actProfileSave(){
