@@ -138,6 +138,14 @@ SRC =	src/main.c		\
 	
 OBJ = $(SRC:.c=.o)
 EXE = wirelessConnect.bin
+OPK = $(EXE:.bin=.opk)
+
+FILES=icon.png \
+	data/ \
+	README.md \
+	COPYING \
+	$(EXE) \
+	default.gcw0.desktop
 
 all : $(SRC) $(EXE)
 
@@ -149,6 +157,12 @@ endif
 
 .c.o:
 	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
-
+	
 clean:
 	rm -rf src/*.o src/game/*.o src/int/*.o $(EXE)
+	
+opk:
+	make all
+	chmod a+x $(EXE)
+	rm $(OPK)
+	mksquashfs $(FILES) $(OPK)
