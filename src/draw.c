@@ -9,6 +9,10 @@
 #include "SDLgfx.h"
 #include "SDLmain.h"
 
+#ifndef VERSION_REVISION
+#define VERSION_REVISION "unknown"
+#endif
+
 char *mode[] =
     {
         "MANAGED",
@@ -61,7 +65,7 @@ void drawMenu()
 
 		drawTextConcat("IP:     ", ((CurNetwork.status != STATUS_ON) || (strlen(CurNetwork.ip) < 1)) ? "N/A" : CurNetwork.ip, 70, 95, &FontUnifont);
 
-		drawText("v0.1.1", SCREEN_WIDTH - 30, SCREEN_HEIGHT - FontSmall.height, &FontSmall);
+		drawText(VERSION_REVISION, SCREEN_WIDTH - strlen(VERSION_REVISION)*5, SCREEN_HEIGHT - FontSmall.height, &FontSmall);
 
 		menuDraw(CurrentMenu, 100, 115);
 	}

@@ -98,12 +98,13 @@ ifeq ($(PLATFORM), gizmondo)
 endif
 
 ###
-SVNREV = -DVERSION_REVISION="$(shell svnversion -n -c . | cut -s -d: -f2 | tr -d MS)" # calculates the svn revision number
+#SVNREV = -DVERSION_REVISION="$(shell svnversion -n -c . | cut -s -d: -f2 | tr -d MS)" # calculates the svn revision number
+GITREV = -DVERSION_REVISION="\"revision no.$(shell git rev-list --reverse HEAD | wc -l)\"" # calculates the git revision number
 
 ifdef DEBUG
-	CFLAGS += -Wextra -Wall -ggdb3 -c -O2 $(SVNREV)
+	CFLAGS += -Wextra -Wall -ggdb3 -c -O2 $(GITREV)
 else
-	CFLAGS += -c -O2 $(SVNREV)
+	CFLAGS += -c -O2 $(GITREV)
 endif
 
 ifdef CHEATS
