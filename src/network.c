@@ -92,7 +92,7 @@ int queryInterfaceStatus()
   	{
   		for(itrAddr = interfaces; itrAddr != NULL; itrAddr = itrAddr->ifa_next) //Iterates through 'em.
   			{
-  				if (strcmp(itrAddr->ifa_name, CurNetwork.interface)!=0) //Ignore anything we're not searching for.
+  				if (!strcmp(itrAddr->ifa_name, CurNetwork.interface)==0) //Ignore anything we're not searching for.
   					continue;
 
   				return itrAddr->ifa_flags & IFF_UP;

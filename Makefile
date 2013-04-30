@@ -23,12 +23,12 @@ endif
 
 ### GCW Zero
 ifeq ($(PLATFORM), gcw)
-	CC = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-gcc
-	STRIP = /opt/gcw0-toolchain/usr/bin/mipsel-gcw0-linux-uclibc-strip
+	CC = /opt/gcw0-toolchain/usr/bin/mipsel-linux-gcc
+	STRIP = /opt/gcw0-toolchain/usr/bin/mipsel-linux-strip
 	CFLAGS = -mips32 -mtune=mips32 -G0 -fomit-frame-pointer -ffunction-sections -ffast-math -fsingle-precision-constant -mbranch-likely
 #	CFLAGS += -D_NO_IFADDRS
 	LDFLAGS = -L/opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/lib/
-	INCLUDE = -I/opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/include/ -I/opt/opendingux-toolchain/usr/include/SDL
+	INCLUDE = -I/opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/include/ -I/opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/include/SDL
 	LIB = -lSDL_mixer -lSDL -lm -lpthread
 endif
 

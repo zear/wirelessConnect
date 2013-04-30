@@ -26,7 +26,10 @@ int main()
 	}
 
 	saveConfig(homeDir, "/config.cfg");
+
+#ifdef _NO_IFADDRS
 	saveTemp("/tmp", "/.wiCon.tmp");
+#endif
 
 	clean();
 
