@@ -1,5 +1,6 @@
 #include "network.h"
 #include <stdio.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -25,6 +26,20 @@ char cmdSetWepKey[120];
 char cmdSetWpaPassphrase[120];
 char cmdSetWpaSup[120];
 char cmdSetDhcp[30];
+
+int systemf(const char *fmt, ...)
+{
+	char __sys[1024];
+	int ret_code;
+	va_list args;
+	va_start(args, fmt);
+	//TODO: CODE
+		vsnprintf(__sys, 1023, fmt, args);
+		ret_code = system(__sys);
+	va_end(args);
+
+	return ret_code;
+}
 
 void updateIpAddress()
 {
@@ -120,7 +135,7 @@ int networkConnect()
 		default:
 		break;
 	}
-	sprintf(cmdSetMode, "ifconfig %s up", CurNetwork.interface);
+	sprintf(cmdSetIfaceUp, "ifconfig %s up", CurNetwork.interface);
 	sprintf(cmdSetIfaceDown, "ifconfig %s down", CurNetwork.interface);
 	sprintf(cmdSetEssid, "iwconfig %s essid \"%s\"", CurNetwork.interface, CurNetwork.essid);
 	sprintf(cmdSetDhcp, "udhcpc -i %s -n", CurNetwork.interface);
@@ -141,7 +156,9 @@ int networkConnect()
 			break;
 	}
 
-	system(cmdSetIfaceDown);
+	systemf("ifconfig %s down", CurNetwork.interface);
+
+#if defined(DRIVER_WEXT)
 	if(system(cmdSetMode))
 	{
 		return 1;
@@ -191,7 +208,33 @@ int networkConnect()
 		default:
 			break;
 	}
-	if(system(cmdSetDhcp))
+#elif defined(DRIVER_NL80211)
+	if(systemf("ifconfig %s up", CurNetwork.interface))
+	{
+		return 1;
+	}
+	sleep(1);
+	switch(CurNetwork.encryption)
+	{
+		case ENC_NONE:
+			break;
+		case ENC_WEP:
+		case ENC_WEP_NUM:
+			systemf("echo -e \"network={\\nssid=\\\"%s\\\"\\nscan_ssid=1\\npriority=5\\nkey_mgmt=NONE\\nwep_key0=\\\"%s\\\"\\nwep_tx_keyidx=0\\n}\" > /tmp/wpa.conf", CurNetwork.essid, CurNetwork.key);
+			systemf("wpa_supplicant -B -Dnl80211 -i%s -c/tmp/wpa.conf", CurNetwork.interface);
+			sleep(1);
+			break;
+		case ENC_WPA:
+			systemf("wpa_passphrase \"%s\" \"%s\" > /tmp/wpa.conf", CurNetwork.essid, CurNetwork.key);
+			systemf("wpa_supplicant -B -Dnl80211 -i%s -c/tmp/wpa.conf", CurNetwork.interface);
+			sleep(1);
+			break;
+
+		default:
+			break;
+	}
+#endif
+	if(systemf("udhcpc -i %s -n", CurNetwork.interface))
 	{
 
             return 1;

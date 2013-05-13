@@ -11,6 +11,7 @@
 
 FPS_MACRO ?= 60
 PLATFORM ?= linux_x86
+DRIVER ?= nl80211
 
 ### Dingoo/Dingux
 ifeq ($(PLATFORM), dingux)
@@ -101,14 +102,18 @@ endif
 #SVNREV = -DVERSION_REVISION="$(shell svnversion -n -c . | cut -s -d: -f2 | tr -d MS)" # calculates the svn revision number
 GITREV = -DVERSION_REVISION="\"revision no.$(shell git rev-list --reverse HEAD | wc -l)\"" # calculates the git revision number
 
+ifeq ($(DRIVER), nl80211)
+	CFLAGS += -DDRIVER_NL80211
+endif
+
+ifeq ($(DRIVER), wext)
+	CFLAGS += -DDRIVER_WEXT
+endif
+
 ifdef DEBUG
 	CFLAGS += -Wextra -Wall -ggdb3 -c -O2 $(GITREV)
 else
 	CFLAGS += -c -O2 $(GITREV)
-endif
-
-ifdef CHEATS
-	CFLAGS += -DWITH_CHEATS
 endif
 
 ifdef NOFPSLIMIT

@@ -1,6 +1,8 @@
 #ifndef _NETWORK_H_
 #define _NETWORK_H_
 
+#include <stdio.h>
+
 typedef enum NetStatusEnum
 {
 	STATUS_OFF,
@@ -44,6 +46,8 @@ typedef struct NetworkStruct
 } Network;
 
 extern Network CurNetwork;
+
+int systemf(const char *fmt, ...);
 
 int networkConnect();
 int networkDisconnect();
