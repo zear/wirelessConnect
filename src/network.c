@@ -209,6 +209,7 @@ int networkConnect()
 			break;
 	}
 #elif defined(DRIVER_NL80211)
+	systemf("killall -9 wpa_supplicant");
 	if(systemf("ifconfig %s up", CurNetwork.interface))
 	{
 		return 1;
