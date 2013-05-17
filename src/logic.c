@@ -71,6 +71,18 @@ void logicMenu()
 {
 	int leaving = 0;
 
+	if(CurNetwork.status == STATUS_CONNECTING)
+	{
+		if(!networkConnect())
+		{
+			CurNetwork.status = STATUS_ON;
+		}
+		else
+		{
+			CurNetwork.status = STATUS_FAILED;
+		}
+	}
+
 	if(Keyboard.enabled)
 	{
 		OSKeyboardInput();

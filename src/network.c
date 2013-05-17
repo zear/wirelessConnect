@@ -159,6 +159,10 @@ int networkConnect()
 	systemf("ifconfig %s down", CurNetwork.interface);
 
 #if defined(DRIVER_WEXT)
+	if(systemf("ifconfig %s up", CurNetwork.interface))
+	{
+		return 1;
+	}
 	if(system(cmdSetMode))
 	{
 		return 1;
@@ -170,10 +174,6 @@ int networkConnect()
 	switch(CurNetwork.encryption)
 	{
 		case ENC_NONE:
-			if(system(cmdSetIfaceUp))
-			{
-				return 1;
-			}
 			sleep(1);
 			break;
 		case ENC_WEP:
@@ -182,17 +182,9 @@ int networkConnect()
 			{
 				return 1;
 			}
-			if(system(cmdSetIfaceUp))
-			{
-				return 1;
-			}
 			sleep(1);
 			break;
 		case ENC_WPA:
-			if(system(cmdSetIfaceUp))
-			{
-				return 1;
-			}
 			sleep(1);
 			if(system(cmdSetWpaPassphrase))
 			{

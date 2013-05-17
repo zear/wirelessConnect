@@ -51,14 +51,6 @@ void actConnect()
 	if(CurNetwork.status == STATUS_OFF)
 	{
 		CurNetwork.status = STATUS_CONNECTING;
-		if(!networkConnect())
-		{
-			CurNetwork.status = STATUS_ON;
-		}
-		else
-		{
-			CurNetwork.status = STATUS_FAILED;
-		}
 	}
 	else
 	{
