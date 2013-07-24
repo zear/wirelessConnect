@@ -1,6 +1,7 @@
 #include "SDLgfx.h"
 #include <SDL.h>
 #include <stdlib.h>
+#include "config.h"
 #include "font.h"
 #include "onScreenKeyboard.h"
 #include "SDLmain.h"
@@ -114,7 +115,29 @@ void drawKeyboard()
 					character[3] = '\0';
 				}
 
-				drawText(Keyboard.input, 20, 20, CurFont);
+				if(config.showKey)
+				{
+					drawText(Keyboard.input, 20, 20, CurFont);
+				}
+				else
+				{
+					int i;
+
+					for(i = 0; i < strlen(Keyboard.input) - 1; i++)
+					{
+						drawText("*", 20 + i * CurFont->width, 20, CurFont);
+					}
+
+					if(Keyboard.visTimer > 0)
+					{
+						drawText(&Keyboard.input[i], 20 + i * CurFont->width, 20, CurFont);
+						Keyboard.visTimer--;
+					}
+					else
+					{
+						drawText("*", 20 + i * CurFont->width, 20, CurFont);
+					}
+				}
 				drawText("^", 20 + Keyboard.inputPos * CurFont->width, 35, CurFont);
 				sprintf(atText, "At:  %d", Keyboard.inputPos);
 				drawText(atText, 250, 5, CurFont);

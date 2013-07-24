@@ -138,6 +138,7 @@ void OSKeyboardInput()
 				Keyboard.input[Keyboard.inputPos] = (char)Keyboard.cursorPnum;
 			}
 			Keyboard.inputPos++;
+			Keyboard.visTimer = VISIBILITY_LEN;
 		}
 
 	}
@@ -148,6 +149,7 @@ void OSKeyboardInput()
 		{
 			Keyboard.inputPos--;
 			Keyboard.input[Keyboard.inputPos] = '\0';
+			Keyboard.visTimer = VISIBILITY_LEN;
 		}
 	}
 	if(keystate[SDLK_SPACE] && Keyboard.type == OSK_ALPHANUM)
@@ -155,6 +157,7 @@ void OSKeyboardInput()
 		keystate[SDLK_SPACE] = 0;
 		Keyboard.input[Keyboard.inputPos] = ' ';
 		Keyboard.inputPos++;
+		Keyboard.visTimer = VISIBILITY_LEN;
 	}
 	if(keystate[SDLK_BACKSPACE])
 	{
