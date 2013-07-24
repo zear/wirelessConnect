@@ -28,8 +28,8 @@ int main()
 		}
 	}
 
-	saveConfig(homeDir, "/config.con");
-	saveNetworkConfig(homeDir, "/defaultNetwork.cfg");
+	saveConfig(homeDir, "/config.cfg");
+	saveNetworkConfig(homeDir, "/lastNetwork.cfg");
 
 #ifdef _NO_IFADDRS
 	saveTemp("/tmp", "/.wiCon.tmp");

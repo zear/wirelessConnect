@@ -158,13 +158,10 @@ static int buildProfilesMenu()
       		if (strlen(namelist[n]->d_name)<4)
       			continue;
 
-      		if (!strcmp(namelist[n]->d_name, "defaultNetwork.cfg"))
-      			continue;
-
       		char *s = &namelist[n]->d_name[strlen(namelist[n]->d_name) - 4];
 
           printf("%s\n", s);
-          if (!strcmp(s, ".cfg"))
+          if (!strcmp(s, ".net"))
           	{
           		i++;
           		char buf[128];
@@ -208,7 +205,7 @@ void actNetwork(){
 void actProfileSave(){
 	char buf[128];
 
-	snprintf(buf, sizeof(buf), "/%s%s" ,CurNetwork.essid, ".cfg");
+	snprintf(buf, sizeof(buf), "/%s%s" ,CurNetwork.essid, ".net");
 	becomesLowercase(buf);
 
 	saveNetworkConfig(homeDir, buf);
@@ -216,7 +213,7 @@ void actProfileSave(){
 
 void actProfileLoad(MenuItem *this){
 	char buf[128];
-	snprintf(buf, sizeof(buf), "/%s%s", this->caption,".cfg");
+	snprintf(buf, sizeof(buf), "/%s%s", this->caption,".net");
 	becomesLowercase(buf);
 
 	printf("Loading profile %s.\n", buf);

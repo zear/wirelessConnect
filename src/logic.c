@@ -33,8 +33,8 @@ void changeGameState()
 	switch(NewGameState)
 	{
 		case STATE_MENU:
-			loadConfig(homeDir, "/config.con");
-			loadNetworkConfig(homeDir, "/defaultNetwork.cfg", &CurNetwork);
+			loadConfig(homeDir, "/config.cfg");
+			loadNetworkConfig(homeDir, "/lastNetwork.cfg", &CurNetwork);
 			break;
 
 		default:
