@@ -10,9 +10,16 @@ typedef enum OnScrKbdTypeEnum
 	OSK_IP
 } OnScrKbdType;
 
+typedef enum OnScrTextTypeEnum
+{
+	OSK_TEXT_VISIBLE,
+	OSK_TEXT_HIDDEN,
+} OnScrTextType;
+
 typedef struct OnScrKbdStruct
 {
-	OnScrKbdType type;
+	OnScrKbdType kbdType;
+	OnScrTextType textType;
 	int inited;
 	int enabled;
 	char *input;

@@ -89,7 +89,7 @@ void drawKeyboard()
 	int posY = 0;
 	char i;
 
-	switch(Keyboard.type)
+	switch(Keyboard.kbdType)
 	{
 		case OSK_ALPHANUM:
 			for(i = 32; i < 126; i++, posX++)
@@ -115,27 +115,34 @@ void drawKeyboard()
 					character[3] = '\0';
 				}
 
-				if(config.showKey)
+				if(Keyboard.textType == OSK_TEXT_VISIBLE)
 				{
 					drawText(Keyboard.input, 20, 20, CurFont);
 				}
-				else
-				{
-					int i;
-
-					for(i = 0; i < strlen(Keyboard.input) - 1; i++)
+				else if(Keyboard.textType == OSK_TEXT_HIDDEN)
 					{
-						drawText("*", 20 + i * CurFont->width, 20, CurFont);
-					}
-
-					if(Keyboard.visTimer > 0)
+					if(config.showKey)
 					{
-						drawText(&Keyboard.input[i], 20 + i * CurFont->width, 20, CurFont);
-						Keyboard.visTimer--;
+						drawText(Keyboard.input, 20, 20, CurFont);
 					}
 					else
 					{
-						drawText("*", 20 + i * CurFont->width, 20, CurFont);
+						int i;
+
+						for(i = 0; i < strlen(Keyboard.input) - 1; i++)
+						{
+							drawText("*", 20 + i * CurFont->width, 20, CurFont);
+						}
+
+						if(Keyboard.visTimer > 0)
+						{
+							drawText(&Keyboard.input[i], 20 + i * CurFont->width, 20, CurFont);
+							Keyboard.visTimer--;
+						}
+						else
+						{
+							drawText("*", 20 + i * CurFont->width, 20, CurFont);
+						}
 					}
 				}
 				drawText("^", 20 + Keyboard.inputPos * CurFont->width, 35, CurFont);

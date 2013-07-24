@@ -33,7 +33,7 @@ void OSKeyboardInput()
 		Keyboard.cursorPx++;
 	}
 
-	if(Keyboard.type == OSK_ALPHANUM)
+	if(Keyboard.kbdType == OSK_ALPHANUM)
 	{
 		maxPnum = 125;
 
@@ -54,7 +54,7 @@ void OSKeyboardInput()
 			Keyboard.cursorPy = 5;
 		}
 	}
-	else if(Keyboard.type == OSK_NUMERIC)
+	else if(Keyboard.kbdType == OSK_NUMERIC)
 	{
 		maxPnum = 57;
 
@@ -75,7 +75,7 @@ void OSKeyboardInput()
 			Keyboard.cursorPy = 1;
 		}
 	}
-	else if(Keyboard.type == OSK_IP)
+	else if(Keyboard.kbdType == OSK_IP)
 	{
 		maxPnum = 58;
 
@@ -106,11 +106,11 @@ void OSKeyboardInput()
 		Keyboard.inputPos = Keyboard.inputLen;
 	}
 
-	if(Keyboard.type == OSK_ALPHANUM)
+	if(Keyboard.kbdType == OSK_ALPHANUM)
 	{
 		Keyboard.cursorPnum = (16 * (Keyboard.cursorPy + 1) - (16 - (Keyboard.cursorPx + 1))) - 1 + 32;
 	}
-	else if(Keyboard.type == OSK_NUMERIC || Keyboard.type == OSK_IP)
+	else if(Keyboard.kbdType == OSK_NUMERIC || Keyboard.kbdType == OSK_IP)
 	{
 		Keyboard.cursorPnum = (16 * (Keyboard.cursorPy + 1) - (16 - (Keyboard.cursorPx + 1))) - 1 + 48;
 	}
@@ -129,7 +129,7 @@ void OSKeyboardInput()
 		}
 		else
 		{
-			if(Keyboard.type == OSK_IP && Keyboard.cursorPnum == 58)
+			if(Keyboard.kbdType == OSK_IP && Keyboard.cursorPnum == 58)
 			{
 				Keyboard.input[Keyboard.inputPos] = '.';
 			}
@@ -152,7 +152,7 @@ void OSKeyboardInput()
 			Keyboard.visTimer = VISIBILITY_LEN;
 		}
 	}
-	if(keystate[SDLK_SPACE] && Keyboard.type == OSK_ALPHANUM)
+	if(keystate[SDLK_SPACE] && Keyboard.kbdType == OSK_ALPHANUM)
 	{
 		keystate[SDLK_SPACE] = 0;
 		Keyboard.input[Keyboard.inputPos] = ' ';

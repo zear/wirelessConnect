@@ -78,7 +78,8 @@ void actOptionsESSID()
 {
 	Keyboard.enabled = 1;
 	Keyboard.inputLen = 59;
-	Keyboard.type = OSK_ALPHANUM;
+	Keyboard.kbdType = OSK_ALPHANUM;
+	Keyboard.textType = OSK_TEXT_VISIBLE;
 	Keyboard.source = CurNetwork.essid;
 }
 
@@ -95,7 +96,8 @@ void actOptionsPassword()
 {
 	Keyboard.enabled = 1;
 	Keyboard.inputLen = 59;
-	Keyboard.type = OSK_ALPHANUM;
+	Keyboard.kbdType = OSK_ALPHANUM;
+	Keyboard.textType = OSK_TEXT_HIDDEN;
 	Keyboard.source = CurNetwork.key;
 }
 
@@ -112,7 +114,8 @@ void actOptionsIP()
 {
 	Keyboard.enabled = 1;
 	Keyboard.inputLen = 14;
-	Keyboard.type = OSK_IP;
+	Keyboard.kbdType = OSK_IP;
+	Keyboard.textType = OSK_TEXT_VISIBLE;
 	Keyboard.source = CurNetwork.ip;
 }
 
@@ -120,7 +123,8 @@ void actOptionsNETMASK()
 {
 	Keyboard.enabled = 1;
 	Keyboard.inputLen = 14;
-	Keyboard.type = OSK_NUMERIC;
+	Keyboard.kbdType = OSK_NUMERIC;
+	Keyboard.textType = OSK_TEXT_VISIBLE;
 	Keyboard.source = CurNetwork.netmask;
 }
 
