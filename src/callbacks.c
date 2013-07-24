@@ -130,10 +130,7 @@ void actOptionsNETMASK()
 
 void actOptionsTogglePasswordVisibility()
 {
-	if(config.showKey)
-		config.showKey = 0;
-	else
-		config.showKey = 1;
+	config.showKey = !config.showKey;
 }
 
 void actNetworkBack()
