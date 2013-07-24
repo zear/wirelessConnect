@@ -125,7 +125,7 @@ void drawKeyboard()
 					{
 						drawText(Keyboard.input, 20, 20, CurFont);
 					}
-					else
+					else if(strlen(Keyboard.input) > 0)
 					{
 						int i;
 
