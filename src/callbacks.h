@@ -27,6 +27,7 @@ void actOptionsPassword();
 void actOptionsDHCP();
 void actOptionsIP();
 void actOptionsNETMASK();
+void actOptionsTogglePasswordVisibility();
 void actOptionsBack();
 
 void actNetworks();

@@ -1,9 +1,12 @@
+#include "config.h"
 #include "draw.h"
 #include "fileio.h"
 #include "input.h"
 #include "logic.h"
 #include "SDLmain.h"
 #include "timer.h"
+
+Config config;
 
 int main()
 {
@@ -25,7 +28,8 @@ int main()
 		}
 	}
 
-	saveConfig(homeDir, "/config.cfg");
+	saveConfig(homeDir, "/config.con");
+	saveNetworkConfig(homeDir, "/defaultNetwork.cfg");
 
 #ifdef _NO_IFADDRS
 	saveTemp("/tmp", "/.wiCon.tmp");

@@ -1,4 +1,5 @@
 #include "draw.h"
+#include "config.h"
 #include "font.h"
 #include "global.h"
 #include "input.h"
@@ -60,7 +61,10 @@ void drawMenu()
 		drawTextConcat("MODE:   ", mode[CurNetwork.mode], 70, 20, &FontUnifont);
 		drawTextConcat("ESSID:  ", CurNetwork.essid, 70, 35, &FontUnifont);
 		drawTextConcat("ENC:    ", encode[CurNetwork.encryption], 70, 50, &FontUnifont);
-		drawTextConcat("PASS:   ", (CurNetwork.encryption == ENC_NONE) ? "N/A": CurNetwork.key, 70, 65, &FontUnifont);
+		if(config.showKey)
+			drawTextConcat("PASS:   ", (CurNetwork.encryption == ENC_NONE) ? "N/A": CurNetwork.key, 70, 65, &FontUnifont);
+		else
+			drawTextConcat("PASS:   ", (CurNetwork.encryption == ENC_NONE) ? "N/A": "*", 70, 65, &FontUnifont);
 		drawTextConcat("STATUS: ", status[CurNetwork.status], 70, 80, &FontUnifont);
 
 		drawTextConcat("IP:     ", ((CurNetwork.status != STATUS_ON) || (strlen(CurNetwork.ip) < 1)) ? "N/A" : CurNetwork.ip, 70, 95, &FontUnifont);

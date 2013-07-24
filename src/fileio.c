@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "config.h"
 #include "network.h"
 
 char *homeDir = NULL;
@@ -108,7 +109,63 @@ int getWords(char *line, char *words[], int maxWords)
 	return nWords;
 }
 
-int loadConfig(char *filePath, char *fileName, Network *network)
+int loadConfig(char *filePath, char *fileName)
+{
+	FILE *ifp;
+	char *newFileName = NULL;
+	char line[MAX_LINE];
+	char *words[MAX_WORDS];
+	int n;
+	int i;
+	int j;
+	int wordsSize;
+
+	// default settings
+	config.showKey = 1;
+
+	newFileName = (char *)malloc(strlen(filePath) + strlen(fileName) + 1);
+	if(newFileName == NULL)
+	{
+		fprintf(stderr, "Out of memory\n");
+		return 1;
+	}
+	strcpy(newFileName, filePath);
+	strcat(newFileName, fileName);
+
+	printf("Loading config from: %s\n", newFileName);
+	ifp = fopen(newFileName, "r");
+	if(ifp == NULL)
+	{
+		fprintf(stderr, "ERROR (loadConfig): Cannot open config file: %s\n", newFileName);
+		return 1;
+	}
+
+	while(fgetLine(ifp, line, MAX_LINE) != EOF)
+	{
+		n = getWords(line, words, MAX_WORDS);
+
+		if(!strcmp(words[0], "SHOW_KEY:"))
+		{
+			if(n < 1)
+			{
+				fprintf(stderr, "WARNING (loadConfig): SHOW_KEY field is empty, assuming default value!\n");
+			}
+			else
+			{
+				if(atoi(words[1]) == 1)
+					config.showKey = 1;
+				else
+					config.showKey = 0;
+			}
+		}
+	}
+
+	fclose(ifp);
+
+	return 0;
+}
+
+int loadNetworkConfig(char *filePath, char *fileName, Network *network)
 {
 	FILE *ifp;
 	char *newFileName = NULL;
@@ -132,7 +189,7 @@ int loadConfig(char *filePath, char *fileName, Network *network)
 	ifp = fopen(newFileName, "r");
 	if(ifp == NULL)
 	{
-		fprintf(stderr, "ERROR (loadConfig): Cannot open config file: %s\n", newFileName);
+		fprintf(stderr, "ERROR (loadNetworkConfig): Cannot open config file: %s\n", newFileName);
 		return 1;
 	}
 
@@ -144,7 +201,7 @@ int loadConfig(char *filePath, char *fileName, Network *network)
 		{
 			if(n < 1)
 			{
-				fprintf(stderr, "WARNING (loadConfig): No INTERFACE specified!\n");
+				fprintf(stderr, "WARNING (loadNetworkConfig): No INTERFACE specified!\n");
 			}
 			else
 			{
@@ -156,7 +213,7 @@ int loadConfig(char *filePath, char *fileName, Network *network)
 		{
 			if(n < 1)
 			{
-				fprintf(stderr, "WARNING (loadConfig): No MODE specified!\n");
+				fprintf(stderr, "WARNING (loadNetworkConfig): No MODE specified!\n");
 			}
 			else
 			{
@@ -167,7 +224,7 @@ int loadConfig(char *filePath, char *fileName, Network *network)
 		{
 			if(n < 1)
 			{
-				fprintf(stderr, "WARNING (loadConfig): No ESSID specified!\n");
+				fprintf(stderr, "WARNING (loadNetworkConfig): No ESSID specified!\n");
 			}
 			else
 			{
@@ -178,7 +235,7 @@ int loadConfig(char *filePath, char *fileName, Network *network)
 		{
 			if(n < 1)
 			{
-				fprintf(stderr, "WARNING (loadConfig): No ENCRYPTION specified!\n");
+				fprintf(stderr, "WARNING (loadNetworkConfig): No ENCRYPTION specified!\n");
 			}
 			else
 			{
@@ -189,7 +246,7 @@ int loadConfig(char *filePath, char *fileName, Network *network)
 		{
 			if(n < 1)
 			{
-				fprintf(stderr, "WARNING (loadConfig): No password specified!\n");
+				fprintf(stderr, "WARNING (loadNetworkConfig): No password specified!\n");
 			}
 			else
 			{
@@ -286,7 +343,37 @@ int saveConfig(char *filePath, char *fileName)
 		return 1;
 	}
 
-	printf("Saving config\n");
+	printf("Saving config...\n");
+	fprintf(ofp, "SHOW_KEY: %d\n", config.showKey);
+	fclose(ofp);
+	free(newFileName);
+
+	return 0;
+}
+
+int saveNetworkConfig(char *filePath, char *fileName)
+{
+	FILE *ofp;
+	char *newFileName = NULL;
+
+	newFileName = (char *)malloc(strlen(filePath) + strlen(fileName) + 1);
+	if(newFileName == NULL)
+	{
+		fprintf(stderr, "Out of memory\n");
+		return 1;
+	}
+	strcpy(newFileName, filePath);
+	strcat(newFileName, fileName);
+
+	ofp = fopen(newFileName, "w");
+	if(ofp == NULL)
+	{
+		fprintf(stderr, "ERROR: (saveConfig) Can't open %s\n", newFileName);
+		free(newFileName);
+		return 1;
+	}
+
+	printf("Saving network config...\n");
 	fprintf(ofp, "INTERFACE: \"%s\"\n", CurNetwork.interface);
 	fprintf(ofp, "MODE: %d\n", CurNetwork.mode);
 	fprintf(ofp, "ENCRYPTION: %d\n", CurNetwork.encryption);

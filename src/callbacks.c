@@ -11,6 +11,7 @@
 #include <stdlib.h>
 
 #include "callbacks.h"
+#include "config.h"
 #include "menu.h"
 #include "network.h"
 #include "onScreenKeyboard.h"
@@ -123,6 +124,14 @@ void actOptionsNETMASK()
 	Keyboard.source = CurNetwork.netmask;
 }
 
+void actOptionsTogglePasswordVisibility()
+{
+	if(config.showKey)
+		config.showKey = 0;
+	else
+		config.showKey = 1;
+}
+
 void actNetworkBack()
 {
 	CurrentMenu = MenuMain;
@@ -148,7 +157,7 @@ static int buildProfilesMenu()
       		if (strlen(namelist[n]->d_name)<4)
       			continue;
 
-      		if (!strcmp(namelist[n]->d_name, "config.cfg"))
+      		if (!strcmp(namelist[n]->d_name, "defaultNetwork.cfg"))
       			continue;
 
       		char *s = &namelist[n]->d_name[strlen(namelist[n]->d_name) - 4];
@@ -201,7 +210,7 @@ void actProfileSave(){
 	snprintf(buf, sizeof(buf), "/%s%s" ,CurNetwork.essid, ".cfg");
 	becomesLowercase(buf);
 
-	saveConfig(homeDir, buf);
+	saveNetworkConfig(homeDir, buf);
 }
 
 void actProfileLoad(MenuItem *this){
@@ -210,5 +219,5 @@ void actProfileLoad(MenuItem *this){
 	becomesLowercase(buf);
 
 	printf("Loading profile %s.\n", buf);
-	loadConfig(homeDir, buf, &CurNetwork);
+	loadNetworkConfig(homeDir, buf, &CurNetwork);
 }

@@ -115,8 +115,9 @@ void menuLoadAll()
 	//MenuOptions = menuCreateNew(MenuOptions, 4, "DHCP", actOptionsDHCP);
 	//MenuOptions = menuCreateNew(MenuOptions, 5, "IP", actOptionsIP);
 	//MenuOptions = menuCreateNew(MenuOptions, 6, "NETMASK", actOptionsNETMASK);
-	MenuOptions = menuCreateNew(MenuOptions, 4, "", NULL);
-	MenuOptions = menuCreateNew(MenuOptions, 5, "BACK", actOptionsBack);
+	MenuOptions = menuCreateNew(MenuOptions, 4, "SHOW/HIDE PASS", actOptionsTogglePasswordVisibility);
+	MenuOptions = menuCreateNew(MenuOptions, 5, "", NULL);
+	MenuOptions = menuCreateNew(MenuOptions, 6, "BACK", actOptionsBack);
 
 	CurrentMenu = MenuMain;
 	SelectedItem = menuSwitchItem(CurrentMenu, 0);
@@ -213,7 +214,7 @@ void menuDrawSingle(MenuContainer *Container, int number, int x, int y, int sz)
 				if (min >= 0 && sz>7)
 					{
 						p = CurrentItem->number - min;
-						printf("%i\n", sz);
+						//printf("%i\n", sz);
 					}
 				else
 					{
