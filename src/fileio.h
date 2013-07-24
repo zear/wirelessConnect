@@ -9,6 +9,7 @@
 
 int fgetLine(FILE *fp, char line[], int max);
 int getWords(char *line, char *words[], int maxwords);
+void saveWithSpecialChars(FILE *ofp, char *text);
 int loadConfig(char *filePath, char *fileName);
 int loadNetworkConfig(char *filePath, char *fileName, Network *network);
 int loadTemp(char *filePath, char *fileName);

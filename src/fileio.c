@@ -13,8 +13,8 @@ int fgetLine(FILE *fp, char line[], int max)
 	int nch = 0;
 	int c;
 	max = max - 1;		/* leave room for '\0' */
-
 	int ignoreLine = 0;
+	static int ignoreSpecial = 0;
 
 	while((c = getc(fp)) != EOF)
 	{
@@ -24,8 +24,15 @@ int fgetLine(FILE *fp, char line[], int max)
 			break;
 		}
 
+		/* Escape special characters */
+		if(c == '\\' && !ignoreSpecial)
+		{
+			ignoreSpecial = 1;
+			continue;
+		}
+
 		/* We're treating anything after '#' as comments and ignoring the rest of the line */
-		if(c == '#')
+		if(c == '#' && !ignoreSpecial)
 		{
 			ignoreLine = 1;
 		}
@@ -38,14 +45,21 @@ int fgetLine(FILE *fp, char line[], int max)
 				nch = nch + 1;
 			}
 		}
+
+		if(ignoreSpecial)
+		{
+			ignoreSpecial = 0;
+		}
 	}
 
 	if(c == EOF && nch == 0)
 	{
+		ignoreSpecial = 0;
 		return EOF;
 	}
 
 	line[nch] = '\0';
+	ignoreSpecial = 0;
 	return nch;
 }
 //breaks a line into words
@@ -107,6 +121,30 @@ int getWords(char *line, char *words[], int maxWords)
 	}
 
 	return nWords;
+}
+
+void saveWithSpecialChars(FILE *ofp, char *text)
+{
+	int i;
+
+	if(text == NULL)
+	{
+		return;
+	}
+
+	for(i = 0; i < strlen(text); i++)
+	{
+		if(text[i] == '\0')
+		{
+			break;
+		}
+		else if(text[i] == '\\' || text[i] == '#')
+		{
+			fprintf(ofp, "\\");
+		}
+
+		fprintf(ofp, "%c", text[i]);
+	}
 }
 
 int loadConfig(char *filePath, char *fileName)
@@ -374,11 +412,18 @@ int saveNetworkConfig(char *filePath, char *fileName)
 	}
 
 	printf("Saving network config...\n");
-	fprintf(ofp, "INTERFACE: \"%s\"\n", CurNetwork.interface);
+
+	fprintf(ofp, "INTERFACE: \"");
+	saveWithSpecialChars(ofp, CurNetwork.interface);
+	fprintf(ofp, "\"\n");
 	fprintf(ofp, "MODE: %d\n", CurNetwork.mode);
 	fprintf(ofp, "ENCRYPTION: %d\n", CurNetwork.encryption);
-	fprintf(ofp, "ESSID: \"%s\"\n", CurNetwork.essid);
-	fprintf(ofp, "KEY: \"%s\"\n", CurNetwork.key);
+	fprintf(ofp, "ESSID: \"");
+	saveWithSpecialChars(ofp, CurNetwork.essid);
+	fprintf(ofp, "\"\n");
+	fprintf(ofp, "KEY: \"");
+	saveWithSpecialChars(ofp, CurNetwork.key);
+	fprintf(ofp, "\"\n");
 	fclose(ofp);
 	free(newFileName);
 
