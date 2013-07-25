@@ -159,7 +159,7 @@ int loadConfig(char *filePath, char *fileName)
 	int wordsSize;
 
 	// default settings
-	config.showKey = 1;
+	config.showKey = 0;
 
 	newFileName = (char *)malloc(strlen(filePath) + strlen(fileName) + 1);
 	if(newFileName == NULL)
