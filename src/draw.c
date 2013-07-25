@@ -58,16 +58,16 @@ void drawMenu()
 	else
 	{
 		drawTextConcat("CARD:   ", CurNetwork.interface, 70, 5, &FontUnifont);
-		drawTextConcat("MODE:   ", mode[CurNetwork.mode], 70, 20, &FontUnifont);
-		drawTextConcat("ESSID:  ", CurNetwork.essid, 70, 35, &FontUnifont);
-		drawTextConcat("ENC:    ", encode[CurNetwork.encryption], 70, 50, &FontUnifont);
+		//drawTextConcat("MODE:   ", mode[CurNetwork.mode], 70, 20, &FontUnifont);
+		drawTextConcat("ESSID:  ", CurNetwork.essid, 70, 20, &FontUnifont);
+		drawTextConcat("ENC:    ", encode[CurNetwork.encryption], 70, 35, &FontUnifont);
 		if(config.showKey)
-			drawTextConcat("PASS:   ", (CurNetwork.encryption == ENC_NONE) ? "N/A": CurNetwork.key, 70, 65, &FontUnifont);
+			drawTextConcat("PASS:   ", (CurNetwork.encryption == ENC_NONE) ? "N/A": CurNetwork.key, 70, 50, &FontUnifont);
 		else
-			drawTextConcat("PASS:   ", (CurNetwork.encryption == ENC_NONE) ? "N/A": "*", 70, 65, &FontUnifont);
-		drawTextConcat("STATUS: ", status[CurNetwork.status], 70, 80, &FontUnifont);
+			drawTextConcat("PASS:   ", (CurNetwork.encryption == ENC_NONE) ? "N/A": "*", 70, 50, &FontUnifont);
+		drawTextConcat("STATUS: ", status[CurNetwork.status], 70, 65, &FontUnifont);
 
-		drawTextConcat("IP:     ", ((CurNetwork.status != STATUS_ON) || (strlen(CurNetwork.ip) < 1)) ? "N/A" : CurNetwork.ip, 70, 95, &FontUnifont);
+		drawTextConcat("IP:     ", ((CurNetwork.status != STATUS_ON) || (strlen(CurNetwork.ip) < 1)) ? "N/A" : CurNetwork.ip, 70, 80, &FontUnifont);
 
 		drawText(VERSION_REVISION, SCREEN_WIDTH - strlen(VERSION_REVISION)*5, SCREEN_HEIGHT - FontSmall.height, &FontSmall);
 

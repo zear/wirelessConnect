@@ -108,16 +108,16 @@ void menuLoadAll()
 	MenuNetwork = menuCreateNew(MenuNetwork, 5, "BACK", actNetworkBack );
 
 
-	MenuOptions = menuCreateNew(MenuOptions, 0, "MODE", actOptionsMode);
-	MenuOptions = menuCreateNew(MenuOptions, 1, "ESSID", actOptionsESSID);
-	MenuOptions = menuCreateNew(MenuOptions, 2, "ENCRYPTION", actOptionsEnc);
-	MenuOptions = menuCreateNew(MenuOptions, 3, "PASSWORD", actOptionsPassword);
+	//MenuOptions = menuCreateNew(MenuOptions, 0, "MODE", actOptionsMode);
+	MenuOptions = menuCreateNew(MenuOptions, 0, "ESSID", actOptionsESSID);
+	MenuOptions = menuCreateNew(MenuOptions, 1, "ENCRYPTION", actOptionsEnc);
+	MenuOptions = menuCreateNew(MenuOptions, 2, "PASSWORD", actOptionsPassword);
 	//MenuOptions = menuCreateNew(MenuOptions, 4, "DHCP", actOptionsDHCP);
 	//MenuOptions = menuCreateNew(MenuOptions, 5, "IP", actOptionsIP);
 	//MenuOptions = menuCreateNew(MenuOptions, 6, "NETMASK", actOptionsNETMASK);
-	MenuOptions = menuCreateNew(MenuOptions, 4, "SHOW/HIDE PASS", actOptionsTogglePasswordVisibility);
-	MenuOptions = menuCreateNew(MenuOptions, 5, "", NULL);
-	MenuOptions = menuCreateNew(MenuOptions, 6, "BACK", actOptionsBack);
+	MenuOptions = menuCreateNew(MenuOptions, 3, "SHOW/HIDE PASS", actOptionsTogglePasswordVisibility);
+	MenuOptions = menuCreateNew(MenuOptions, 4, "", NULL);
+	MenuOptions = menuCreateNew(MenuOptions, 5, "BACK", actOptionsBack);
 
 	CurrentMenu = MenuMain;
 	SelectedItem = menuSwitchItem(CurrentMenu, 0);
