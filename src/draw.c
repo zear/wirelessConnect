@@ -26,7 +26,7 @@ char *encode[] =
         "NONE (OPEN)",
         "WEP",
         "WEP (NUMERIC KEY)",
-        "WPA"
+        "WPA/WPA2"
     };
 
 char *status[] =
