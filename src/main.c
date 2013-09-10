@@ -14,7 +14,10 @@ int main()
 
 	homeDir = getHomeDir(homeDir);
 
-	initSDL();
+	if(initSDL())
+	{
+		return 1;
+	}
 
 	setGameState(STATE_INIT);
 
