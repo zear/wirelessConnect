@@ -11,7 +11,7 @@
 
 FPS_MACRO ?= 60
 PLATFORM ?= linux_x86
-DRIVER ?= nl80211
+DRIVER ?= wext
 
 ### Dingoo/Dingux
 ifeq ($(PLATFORM), dingux)
